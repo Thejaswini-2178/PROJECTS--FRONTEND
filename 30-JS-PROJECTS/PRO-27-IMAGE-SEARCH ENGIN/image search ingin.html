@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(115, 110, 115);
+        }
+        #infield {
+            display: flex;
+            align-items: center;
+            margin: auto;
+            padding: 20px;
+            outline: none;
+            width: 220px;
+            height: 2px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        #button {
+            border-radius: 10px;
+            outline: none;
+            height: 25px;
+            background-color: rgb(222, 169, 12);
+            color: white;
+            cursor: pointer;
+            border:none
+        }
+        #searchbox {
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        #imgcontainer {
+            width: 100%;
+            margin-top: 20px ;
+        }
+        #showMore {
+            display: none;
+        }
+        #searchMore {
+            width: 80%;
+            margin: 50px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+            gap: 20px; /* Space between grid items */
+        }
+        #searchMore img {
+            width: 100%; /* Make images responsive */
+            height: 230px; /* Fixed height for images */
+            object-fit: cover; /* Ensure images cover the area without distortion */
+            border-radius: 5px; /* Rounded corners for images */
+        }
+    </style>
+</head>
+<body>
+    <form id="imgcontainer">
+        <div id="infield">
+            <input type="text" id="searchbox" placeholder="Search here...">
+            <button type="submit" id="button">Search</button>
+        </div>
+        <div id="searchMore"></div>
+        <button id="showMore">Show More</button>
+    </form>
+
+
+    <!-- script -->
+    <script>
+        var accesskey = "NO2k-m2JUSV75uB_2XtzixYmMf1gbxn_EW-LAz54D4M";
+        var imgBox = document.getElementById("imgcontainer");
+        var imginput = document.getElementById("searchbox");
+        var searchResult = document.getElementById("searchMore");
+        var showImageBtn = document.getElementById("showMore");
+
+        var keyword = "";
+        var page = 1;
+
+        async function searchImages() {
+            keyword = imginput.value;
+            var url = `https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accesskey}`;
+
+            var response = await fetch(url);
+            var data = await response.json();
+
+            var result = data.results;
+
+            result.forEach((result) => {
+                var image = document.createElement("img");
+                image.src = result.urls.small;
+                var imageLink = document.createElement("a");
+                imageLink.href = result.links.html;
+                imageLink.target = "_blank";
+                imageLink.appendChild(image);
+                searchResult.appendChild(imageLink);
+            });
+            console.log(data);
+        }
+        imgBox.addEventListener("submit", (e) => {
+            e.preventDefault();
+            page = 1;
+            searchImages();
+        });
+    </script>
+</body>
+</html>

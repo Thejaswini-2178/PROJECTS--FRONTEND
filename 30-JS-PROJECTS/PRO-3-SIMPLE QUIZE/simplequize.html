@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            background-image: radial-gradient(rgb(76, 9, 125), rgb(114, 32, 87));
+        }
+        #container {
+            border: 2px solid white;
+            background-color: white;
+            width: 300px;
+            height: 400px; /* Increased height to accommodate the Play Again button */
+            margin: auto;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        .ansBTN {
+            display: block;
+            margin: 10px auto;
+            width: 250px;
+            text-align: left;
+            border-radius: 5px;
+            border: 2px solid rgb(239, 230, 230);
+            background-color: white;
+            color: black;
+        }
+        .ansBTN.correct {
+            background-color: green;
+            color: white;
+        }
+        .ansBTN.incorrect {
+            background-color: red;
+            color: white;
+        }
+        .ansBTN:hover {
+            cursor: pointer;
+        }
+        h4 {
+            color: rgb(55, 7, 100);
+        }
+        #next {
+            background-color: rgb(55, 125, 50);
+            margin: 20px auto auto 130px;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            
+            display: none; /* Initially hidden */
+        }
+        #play-again {
+            background-color: rgb(55, 125, 50);
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+            margin-left: 120px;
+        }
+        h1{
+            color: rgb(255, 0, 43);
+            font-family: fantasy;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1 id="quize-title">Simple Quiz</h1><hr>
+        <h4 id="question">Question goes here</h4>
+        <div id="ans">
+            <!-- Buttons will be inserted here -->
+        </div>
+        <button id="next" onclick="playAgain()">Next</button>
+        <button id="play-again" >Play Again</button>
+    </div>
+
+    <script>
+        var questions = [
+            {
+                question: "1. How many players need to play the cricket game?",
+                answer: [
+                    { text: "9", correct: false },
+                    { text: "19", correct: false },
+                    { text: "11", correct: true },
+                    { text: "21", correct: false }
+                ]
+            },
+            {
+                question: "2. In which direction does the sun rise?",
+                answer: [
+                    { text: "East", correct: true },
+                    { text: "West", correct: false },
+                    { text: "North", correct: false },
+                    { text: "South", correct: false }
+                ]
+            },
+            {
+                question: "3. Who is the father of the nation?",
+                answer: [
+                    { text: "Nehru", correct: false },
+                    { text: "Abdul Kalam", correct: false },
+                    { text: "Gandhi", correct: true },
+                    { text: "Subhas Chandra Bose", correct: false }
+                ]
+            },
+            {
+                question: "4. Who is the king of the jungle?",
+                answer: [
+                    { text: "Tiger", correct: false },
+                    { text: "Elephant", correct: false },
+                    { text: "Fox", correct: false },
+                    { text: "Lion", correct: true }
+                ]
+            },
+            {
+                question: "5. National bird?",
+                answer: [
+                    { text: "Parrot", correct: false },
+                    { text: "Peacock", correct: true },
+                    { text: "Ostrich", correct: false },
+                    { text: "Duck", correct: false }
+                ]
+            }
+        ];
+
+        var questionContent = document.getElementById("question");
+        var answerButton = document.getElementById("ans");
+        var nextButton = document.getElementById("next");
+        var playAgainButton = document.getElementById("play-again");
+
+        var presentQuestionsIndex = 0;
+        var score = 0;
+
+        function showQuestion() {
+            var currentQuestion = questions[presentQuestionsIndex];
+            var questionNo = presentQuestionsIndex + 1;
+            questionContent.innerHTML = questionNo + ". " + currentQuestion.question;
+
+            answerButton.innerHTML = ""; // Clear previous answers
+            currentQuestion.answer.forEach(answer => {
+                var button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("ansBTN");
+                button.addEventListener("click", function() {
+                    if (answer.correct) {
+                        button.classList.add("correct");
+                        score++;
+                    } else {
+                        button.classList.add("incorrect");
+                    }
+                    answerButton.querySelectorAll('button').forEach(btn => btn.disabled = true); // Disable all buttons after click
+                    nextButton.style.display = "block";
+                });
+                answerButton.appendChild(button);
+            });
+        }
+
+        function resetQuiz() {
+            presentQuestionsIndex = 0;
+            score = 0;
+            nextButton.style.display = "none";
+            playAgainButton.style.display = "none";
+            showQuestion();
+        }
+
+        nextButton.addEventListener("click", function() {
+            presentQuestionsIndex++;
+            if (presentQuestionsIndex < questions.length) {
+                showQuestion();
+                nextButton.style.display = "none"; // Hide next button
+                
+            } else {
+                questionContent.innerHTML = "Quiz completed! Your score is: " + score;
+                answerButton.innerHTML = "";
+                nextButton.style.display = "none";
+                playAgainButton.style.display = "block"; // Show play again button
+            }
+
+            if(score==5){
+                document.getElementById("quize-title").innerHTML="Congratulations ..!"
+            }
+            else{
+                d
+            }
+        });
+        playAgainButton.addEventListener("click", function() {
+            resetQuiz();
+        });
+
+        showQuestion();
+    </script>
+</body>
+</html>

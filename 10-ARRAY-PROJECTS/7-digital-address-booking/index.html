@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Address Book</title>
+    <!-- <script src="app.js" defer></script> -->
+    <script src="app2.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Digital Address Book</h1>
+
+        <!-- Add / Edit Contact Form -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="contactForm" class="space-y-4">
+                <input type="text" id="contactName" class="w-full px-3 py-2 border rounded-md" placeholder="Enter name"
+                    required />
+                <input type="email" id="contactEmail" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter email" required />
+                <input type="text" id="contactPhone" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter phone number" required />
+                <button type="submit" id="contactSubmitButton"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add Contact
+                </button>
+            </form>
+        </div>
+
+        <!-- Search Contacts -->
+        <div class="bg-white p-4 rounded shadow mb-6">
+            <input type="text" id="searchInput" class="w-full px-3 py-2 border rounded-md"
+                placeholder="Search contacts by name or email" />
+        </div>
+
+        <!-- Contact List Section -->
+        <div id="contactList" class="space-y-6">
+            <!-- Dynamic Contact List Will Be Rendered Here -->
+        </div>
+    </div>
+    <script>
+
+        const addressBook = {
+            contacts: [],
+            isEditing: false,
+            editingEmail: null,
+            handleContactForm: function (name, email, phone) {
+                console.log(name, email, phone);
+                if (this.isEditing) {
+                    this.updateContact(name, email, phone);
+                } else {
+                    this.addContact(name, email, phone);
+                }
+            },
+            addContact: function (name, email, phone) {
+                const contact = {
+                    id: Date.now(),
+                    contactName: name,
+                    contactEmail: email,
+                    contactPhone: phone,
+                };
+                this.contacts.push(contact);
+                this.renderContacts();
+                this.resetContact(contact);
+            },
+            editContact: function (email) {
+                const contactToEdit = this.contacts.find(
+                    (contact) => contact.contactEmail == email
+                );
+                for (a in contactToEdit) {
+                    if (a !== "id") {
+                        document.getElementById(a).value = contactToEdit[a];
+                    }
+                    if (a === "contactEmail") {
+                        document.getElementById(a).setAttribute("readOnly", true);
+                    }
+                }
+                this.isEditing = true;
+                this.editingEmail = email;
+                document.getElementById("contactSubmitButton").innerHTML =
+                    "Update Contact ";
+            },
+            updateContact: function (contactName, contactEmail, contactPhone) {
+                this.contacts = this.contacts.map((contact) =>
+                    contact.contactEmail === contactEmail
+                        ? { ...contact, contactName, contactPhone }
+                        : contact
+                );
+                this.renderContacts();
+                this.resetContact({ contactName, contactEmail, contactPhone });
+                this.isEditing = false;
+                this.editingEmail = null;
+            },
+            deleteContact: function (contactEmail) {
+                this.contacts = this.contacts.filter((contact) => {
+                    return contact.contactEmail !== contactEmail;
+                });
+                this.renderContacts();
+            },
+            searchContact: function (query) {
+                const userInput = query.toLowerCase();
+                return this.contacts.filter((contact) => {
+                    return (
+                        contact.contactName.includes(userInput) ||
+                        contact.contactEmail.includes(userInput)
+                    );
+                });
+            },
+            sortContact: function () { },
+            renderContacts: function () {
+                document.querySelector("#contactList").innerHTML = "";
+                this.contacts.forEach((contact) => {
+                    const myDiv = document.createElement("div");
+                    myDiv.className = "bg-white p-4 rounded shadow";
+                    myDiv.innerHTML = `
+        <p class="font-semibold">Name : ${contact.contactName}</p>
+        <p class="text-sm text-gray-600">Email : ${contact.contactEmail}</p>
+        <p class="text-sm text-gray-600">Phone : ${contact.contactPhone}</p>
+       <div  class="mt-4">
+        <button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600" onclick = "addressBook.editContact('${contact.contactEmail}')">Edit</button>
+        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600" onclick = "addressBook.deleteContact('${contact.contactEmail}')">Delete</button>
+       <div>
+        `;
+                    document.querySelector("#contactList").appendChild(myDiv);
+                });
+            },
+            resetContact: function (contact) {
+                for (a in contact) {
+                    if (a !== "id") {
+                        document.getElementById(a).value = "";
+                    }
+                }
+            },
+        };
+
+        const { resetContact } = addressBook;
+        document.getElementById("contactForm").onsubmit = function (e) {
+            e.preventDefault();
+            const name = document.getElementById("contactName").value.trim();
+            const email = document.getElementById("contactEmail").value.trim();
+            const phone = document.getElementById("contactPhone").value.trim();
+
+            addressBook.handleContactForm(name, email, phone);
+        };
+
+        document.getElementById("searchInput").addEventListener("input", function (e) {
+            console.log(e.target.value);
+            const query = e.target.value.trim();
+            addressBook.contacts = addressBook.searchContact(query);
+            addressBook.renderContacts();
+        });
+    </script>
+</body>
+
+</html>

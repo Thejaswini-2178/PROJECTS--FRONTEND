@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Inventory Management System</h1>
+
+        <!-- Add Product Form -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="productForm" class="space-y-4">
+                <input type="text" id="productName" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter product name" required />
+                <input type="number" id="productQuantity" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter quantity" required />
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add Product
+                </button>
+            </form>
+        </div>
+
+        <!-- Product List Section -->
+        <div id="productList" class="space-y-6">
+            <!-- Dynamic Product List Will Be Rendered Here -->
+        </div>
+
+        <!-- Total Quantity Section -->
+        <div class="bg-white p-4 rounded shadow mt-6">
+            <h2 class="text-lg font-semibold">Total Quantity: <span id="totalQuantity">0</span></h2>
+        </div>
+    </div>
+    <script>
+        const inventarySystem={
+            products:[],
+            addProduct(name,quantity){
+                const productId=Date.now()
+                const newProduct={
+                    id:productId,
+                    name,
+                    quantity:parseInt(quantity)
+                }
+                this.products.push(newProduct)
+                this.renderProduct(newProduct.id,newProduct.quantity)
+                this.formReset()
+                console.log(this.products)
+            },
+            updateProductQuantity(id,newQuantity){
+                const productIndex=this.products.findIndex((product)=>product.id===id)
+                if(productIndex !==-1){
+                    this.products[productIndex].quantity=newQuantity
+                    this.renderProduct()
+                }else{
+                    alert("product not found")
+                }
+            },
+            removeProduct(id){
+                this.products=this.products.filter((product)=>product.id!==id)
+                this.renderProduct()
+            },
+            calculateTotalQuntity(id,quantity){
+                return this.products.reduce((total,product)=>total+product.quantity,0)
+            },
+            sortByName(){
+                this.product.sort((a,b)=>a.name.localeCompare(b.name))
+                this.renderProduct()
+            },
+            renderProduct(id,quantity){
+               const productList=document.getElementById("productList")
+               const totalQuantity=document.getElementById("totalQuantity")
+               productList.innerHTML=""
+
+               this.products.forEach((product)=>{
+                const productDiv=document.createElement("div")
+                productDiv.innerHTML=`
+                <h2>${product.name}-(${product.quantity}</h2>
+                <div>
+                    <button onclick="inventarySystem.updateProductQuantity(${product.id})">Update</button>
+                </div>
+                 <div>
+                    <button onclick="inventarySystem.removeProduct(${product.id})">Remove</button>
+                </div>
+                `
+                productList.appendChild(productDiv)
+               })
+            //    totalQuantity=inventarySystem.calculateTotalQuntity(id,parseInt(quntity))
+            totalQuantity.innerHTML=inventarySystem.calculateTotalQuntity(id,parseInt(quantity))
+
+            },
+            updateQuntity(id){
+                const alert=prompt("Enter the value")
+
+            },
+            formReset(){},
+        }
+        document.getElementById("productForm").addEventListener("submit",function(e){
+            e.preventDefault()
+            const name=document.getElementById("productName").value.trim()
+            const quantity=document.getElementById("productQuantity").value.trim()
+
+            if(name && quantity && parseInt(quantity)>0){
+                inventarySystem.addProduct(name,quantity)
+            }else{
+                alert("please enter the data")
+            }
+        })
+    </script>
+
+</body>
+
+</html>

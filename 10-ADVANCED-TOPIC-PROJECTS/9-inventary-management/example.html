@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Inventory Management System</h1>
+
+        <!-- Add Product Section -->
+        <div class="mb-6">
+            <input id="product-name" type="text" placeholder="Product Name"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <input id="product-quantity" type="number" placeholder="Quantity"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <button id="add-product-btn" class="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
+        </div>
+
+        <!-- Inventory Section -->
+        <div id="inventory" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Product Inventory</h2>
+            <div id="products" class="space-y-4"></div>
+        </div>
+    </div>
+    <script>
+        let inventory = [];
+
+        const fetchInventory = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/inventory");
+                if (!response.ok) throw new Error("Failed to fetch");
+                const data = await response.json();
+                inventory = data.map((product) => ({
+                    id: product.id,
+                    name: product.name,
+                    quantity: product.quantity
+                }));
+                renderInventory();
+            } catch (error) {
+                console.error("Error fetching inventory:", error);
+            }
+        };
+
+        document.getElementById("add-product-btn").addEventListener("click", () => {
+            const productName = document.getElementById("product-name").value;
+            const productQuantity = parseFloat(document.getElementById("product-quantity").value);
+            if (!productName || isNaN(productQuantity)) {
+                alert("Please enter valid data");
+                return;
+            }
+            if (productQuantity < 0) {
+                alert("Quantity must not be negative");
+                return;
+            }
+            const newProduct = {
+                id: Date.now(),
+                name: productName,
+                quantity: productQuantity
+            };
+            inventory.push(newProduct);
+            saveToLocalStorage();
+            renderInventory();
+        });
+
+        const renderInventory = () => {
+            const productsContainer = document.getElementById("products");
+            productsContainer.innerHTML = "";
+            inventory.forEach((product) => {
+                const inventoryDiv = document.createElement("div");
+                inventoryDiv.className = "flex justify-between items-center p-2 border-b";
+                inventoryDiv.innerHTML = `
+            <span>${product.name}</span>
+            <span>${product.quantity}</span>
+            <div>
+                <button onclick="updateInventery(${product.id}, 'increase')" class="text-green-500">Increment</button>
+                <button onclick="updateInventery(${product.id}, 'decrease')" class="text-yellow-500">Decrease</button>
+                <button onclick="removeInventary(${product.id})" class="text-red-500">Remove</button>
+            </div>
+        `;
+                productsContainer.appendChild(inventoryDiv);
+            });
+        };
+
+        const saveToLocalStorage = () => {
+            localStorage.setItem("inventory", JSON.stringify(inventory));
+        };
+
+        const loadFromLocalStorage = () => {
+            inventory = JSON.parse(localStorage.getItem("inventory") || "[]");
+            renderInventory();
+        };
+
+        const updateInventery = (id, action) => {
+            const product = inventory.find((item) => item.id === id);
+            if (product) {
+                if (action === "increase") {
+                    product.quantity++;
+                } else if (action === "decrease" && product.quantity > 0) {
+                    product.quantity--;
+                }
+                saveToLocalStorage();
+                renderInventory();
+            }
+        };
+
+        const removeInventary = (id) => {
+            inventory = inventory.filter((product) => product.id !== id);
+            saveToLocalStorage();
+            renderInventory();
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFromLocalStorage();
+        });
+    </script>
+</body>
+
+</html>

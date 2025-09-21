@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Date Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e0f7fa; /* Light cyan background */
+        }
+        .date-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff8a80, #ff5252); /* Gradient background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            text-align: center;
+        }
+        .date-container img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 15px;
+        }
+        .date-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .day {
+            font-size: 2rem;
+            color: #ffeb3b; /* Yellow color for day */
+        }
+        .month-day-year {
+            font-size: 1.2rem;
+            color: #ffffff; /* White color for month, day, year */
+        }
+        .year {
+            font-size: 1rem;
+            color: #b2ff59; /* Light green color for year */
+        }
+    </style>
+</head>
+<body>
+    <div class="date-container">
+        <img src="https://img.icons8.com/ios/50/ffffff/calendar.png" alt="Calendar Icon">
+        <div class="date-text day" id="day-text"></div>
+        <div class="date-text month-day-year" id="month-day-year"></div>
+        <div class="date-text year" id="year-text"></div>
+    </div>
+
+    <script>
+        function formatDate(date) {
+            const optionsDay = { weekday: 'long' };
+            const optionsDate = { month: 'long', day: 'numeric' };
+            const optionsYear = { year: 'numeric' };
+            
+            const dayName = date.toLocaleDateString(undefined, optionsDay);
+            const monthDay = date.toLocaleDateString(undefined, optionsDate);
+            const year = date.toLocaleDateString(undefined, optionsYear);
+            
+            return { dayName, monthDay, year };
+        }
+
+        const today = new Date();
+        const { dayName, monthDay, year } = formatDate(today);
+
+        document.getElementById('day-text').textContent = dayName;
+        document.getElementById('month-day-year').textContent = monthDay;
+        document.getElementById('year-text').textContent = year;
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSarjxstRpdMm2v2_Tlx0ugD6ILmimdioSIUA&s') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .crypto-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .crypto-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 280px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .crypto-card h2 {
+            margin: 0 0 15px;
+            font-size: 20px;
+        }
+
+        .crypto-info {
+            font-size: 16px;
+        }
+
+        .crypto-info .price {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .crypto-info .change {
+            font-size: 16px;
+        }
+
+        .crypto-card:hover {
+            transform: scale(1.05);
+        }
+        .footer{
+            background-color: black;
+            color:white;
+            width:100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Cryptocurrency Dashboard</h1>
+        </header>
+        <div class="crypto-container">
+            <div class="crypto-card" id="btcCard">
+                <h2>Bitcoin (BTC)</h2>
+                <div class="crypto-info">
+                    <p class="price" id="btcPrice">$0</p>
+                    <p class="market-cap" id="btcMarketCap">Market Cap: $0</p>
+                    <p class="change" id="btcChange">24h Change: 0%</p>
+                </div>
+            </div>
+            <div class="crypto-card" id="ethCard">
+                <h2>Ethereum (ETH)</h2>
+                <div class="crypto-info">
+                    <p class="price" id="ethPrice">$0</p>
+                    <p class="market-cap" id="ethMarketCap">Market Cap: $0</p>
+                    <p class="change" id="ethChange">24h Change: 0%</p>
+                </div>
+            </div>
+            <div class="crypto-card" id="xrpCard">
+                <h2>Ripple (XRP)</h2>
+                <div class="crypto-info">
+                    <p class="price" id="xrpPrice">$0</p>
+                    <p class="market-cap" id="xrpMarketCap">Market Cap: $0</p>
+                    <p class="change" id="xrpChange">24h Change: 0%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>© 2024 Cryptocurrency Dashboard. All rights reserved.</p>
+    </footer>
+    <script>
+        async function fetchCryptoData(id, priceId, marketCapId, changeId) {
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`);
+                const data = await response.json();
+
+                const priceElement = document.getElementById(priceId);
+                const marketCapElement = document.getElementById(marketCapId);
+                const changeElement = document.getElementById(changeId);
+
+                priceElement.textContent = `$${data.market_data.current_price.usd.toLocaleString()}`;
+                marketCapElement.textContent = `Market Cap: $${data.market_data.market_cap.usd.toLocaleString()}`;
+                changeElement.textContent = `24h Change: ${data.market_data.price_change_percentage_24h.toFixed(2)}%`;
+
+                // Change text color based on percentage change
+                changeElement.style.color = data.market_data.price_change_percentage_24h >= 0 ? '#4caf50' : '#f44336';
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        fetchCryptoData('bitcoin', 'btcPrice', 'btcMarketCap', 'btcChange'); // Bitcoin
+        fetchCryptoData('ethereum', 'ethPrice', 'ethMarketCap', 'ethChange'); // Ethereum
+        fetchCryptoData('ripple', 'xrpPrice', 'xrpMarketCap', 'xrpChange'); // Ripple
+    </script>
+</body>
+</html>

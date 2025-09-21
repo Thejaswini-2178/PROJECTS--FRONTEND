@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: radial-gradient(rgb(152, 30, 239),rgb(187, 75, 225));
+        }
+        #continer{
+            width:500px;
+            height: auto;
+            margin:20px;
+        }
+        #parent {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #parent img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px; /* Adds space between the icon and the text */
+        }
+        #parent span {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .button{
+            display: flex;
+            align-items: center;
+        }
+        .button img{
+            width:20px;
+            height:20px;
+            border-radius: 10px;
+            border: none;
+            margin: auto;
+        }
+        .button button{
+            color: white;
+            background-color: rgb(43, 181, 30);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            width: 115px;
+            cursor: pointer;
+        }
+        .child .input-box{
+            width: 250px;
+            border-style:none;
+            height: 130px;
+            background-color: white;
+            border-radius: 10px;
+            /* border:1px solid white; */
+            margin-top: 10px;
+            outline: none;
+        }
+        .child img {
+           width:15px;
+        display: block;
+        cursor: pointer;
+        
+        }
+</style>
+</head>
+<body>
+    <div id="continer">
+        <div id="parent">
+            <img src="https://png.pngtree.com/png-vector/20230105/ourmid/pngtree-book-icon-vector-image-png-image_6552370.png" alt="" >
+            <span>NOTES</span>
+        </div>
+        <div class="button">
+            <button type="button">Create Notes   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGf78ksDLJWmJc0C1S0RVnXX1SuAEt10N_Og&s" alt=""> </button>
+        </div>
+        <div class="child">
+            <p contenteditable="true" class="input-box">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuMgw_y-uwDL3tMOba9uJY7c06JSaBHW7ebg&s" alt="">
+            </p>
+        </div>
+    </div>
+    <script>
+        var notesContainer=document.querySelector(".child");
+        var createBtn=document.querySelector(".button");
+        var notes=document.querySelectorAll(".input-box");
+
+        function showNotes(){
+            notesContainer.innerHTML=localStorage.getItem("notes");
+        }
+        showNotes()
+
+        function updateStorage(){
+            localStorage.setItem("notes",notesContainer.innerHTML)
+        }
+
+        createBtn.addEventListener("click",()=>{
+            var inputbox=document.createElement("p");
+            var img=document.createElement("img");
+            inputbox.className="input-box";
+            inputbox.setAttribute("contenteditable","true")
+            img.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuMgw_y-uwDL3tMOba9uJY7c06JSaBHW7ebg&s";
+            notesContainer.appendChild(inputbox).appendChild(img);
+        })
+        notesContainer.addEventListener("click",function(e){
+            if(e.target.tagName==="IMG"){
+                e.target.parentElement.remove();
+                  updateStorage();
+            }
+            else if(e.target.tagName==="p"){
+                notes=document.querySelectorAll(".input-box");
+                notes.forEach(nt=>{
+                    nt.onkeyup=function(){
+                         updateStorage()
+                    }
+                })
+            }
+        })
+        document.addEventListener("keydown",event=>{
+            if(event.key=== "Enter"){
+                document.execCommand("insertlineBreak");
+                event.preventDefault();
+
+            }
+        })
+    </script>
+</body>
+</html>

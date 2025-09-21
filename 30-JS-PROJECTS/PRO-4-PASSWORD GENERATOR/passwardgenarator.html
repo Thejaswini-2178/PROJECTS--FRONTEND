@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0px;
+            padding: 0px;
+        }
+        body{
+            background-image: radial-gradient(rgb(193, 198, 203),rgb(239, 227, 248));
+        }
+        #continer{
+            background-image: radial-gradient(rgb(82, 72, 80),rgb(16, 16, 16));
+            width:300px;
+            height: 160px;
+            background-color: rgb(10, 10, 10);
+            border:transparent;
+            border-radius: 10px;
+            margin:100px auto auto 250px;
+            padding:20px;
+            border-radius: 20px;
+            color:white;
+        }
+        span{
+            color:rgb(246, 249, 250)
+        }
+        .child{
+            border-radius: 5px;
+            border-width:100px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border:none;
+            input{
+                border:none;
+                border:transparent;
+                height: 25px;
+                border-radius: 3px;
+                margin:2px
+            }
+        }
+        button{
+            background-color: rgba(81, 237, 81, 0.954);
+            color: rgb(15, 15, 15);
+            margin:3px auto 0px 70px;
+            border-radius: 5px;
+            border:1px solid;
+            height:30px;
+        }
+        button:hover{
+            border: 1px solid rgb(206, 242, 210);
+            cursor: pointer;
+
+        }
+        .child img{
+            width:25px;
+            filter: drop-shadow(8px 8px 10px gray);
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- step-1 first set the hedding and one input file with type of pasword in html file -->
+     <div id="continer">
+        <h1>Generate <br><span>Random Password</span></h1>
+        <div class="child">
+            <input type="text" placeholder="Password" id="password">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwtjMb1SHXRo3GQ93skJ1GsmKZiuqLRiY7Yg&s" alt="" onclick="copyPassword()">
+        </div>
+        <div id="button">
+            <button type="button" onclick="generatePassword()">Generate Password</button>
+        </div>
+     </div>
+     <!-- step -2 now writing the script for generating the random passwords -->
+     <script>
+        var passwordContainer=document.getElementById("password");
+        var length=12;
+        var upperLetters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var lowerLetters="abcdefghijklmnopqrstuvwxyz";
+        var numbers='0123456789';
+        var specialLetters="!@#$%^&*(){}?/><,|~_";
+        var allChar=upperLetters+lowerLetters+numbers+specialLetters;
+
+        // creating the function for generating the pasword
+        function generatePassword(){
+            var password=""
+            password+= upperLetters[Math.floor(Math.random()*upperLetters.length)];
+            password+= lowerLetters[Math.floor(Math.random()*lowerLetters.length)]
+            password+= numbers[Math.floor(Math.random()*numbers.length)];
+            password+= specialLetters[Math.floor(Math.random()*specialLetters.length)]
+            while(length>password.length){
+                password+=allChar[Math.floor(Math.random()*allChar.length)];
+            }
+            passwordContainer.value=password;
+        }
+
+        function copyPassword(){
+            password.select();
+            document.execCommand("copy")
+        }
+
+     </script>
+</body>
+</html>

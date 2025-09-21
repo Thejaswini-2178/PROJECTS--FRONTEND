@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 30px;
+      width: 400px;
+      max-width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .category {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .category h3 {
+      margin: 0;
+      color: #333;
+    }
+
+    .category p {
+      color: #555;
+    }
+
+    h3.total-expense {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+    <div>
+      <input type="text" id="category" placeholder="Category">
+      <input type="number" id="amount" placeholder="Amount">
+      <button onclick="addExpense()">Add Expense</button>
+      <p id="error" class="error"></p>
+    </div>
+    <div>
+      <h2>Expense Summary</h2>
+      <div id="summary"></div>
+      <h3 class="total-expense">Total Expense: $<span id="total-expense">0.00</span></h3>
+    </div>
+  </div>
+
+  <script>
+    const expenses = [];
+
+    function addExpense() {
+      const categoryInput = document.getElementById('category');
+      const amountInput = document.getElementById('amount');
+      const errorElement = document.getElementById('error');
+
+      const category = categoryInput.value.trim();
+      const amount = parseFloat(amountInput.value);
+
+      if (!category || isNaN(amount) || amount <= 0) {
+        errorElement.textContent = 'Please enter a valid category and amount.';
+        return;
+      }
+
+      errorElement.textContent = '';
+      expenses.push({ category: category, amount: amount });
+
+      categoryInput.value = '';
+      amountInput.value = '';
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const summaryElement = document.getElementById('summary');
+      const totalExpenseElement = document.getElementById('total-expense');
+      summaryElement.innerHTML = '';
+
+      const categories = expenses.reduce((acc, expense) => {
+        if (!acc[expense.category]) {
+          acc[expense.category] = 0;
+        }
+        acc[expense.category] += expense.amount;
+        return acc;
+      }, {});
+
+      const sortedCategories = Object.keys(categories).sort();
+      let totalExpense = 0;
+
+      //   if (sortedCategories.length === 0) {
+      //     summaryElement.innerHTML = 'No expenses yet.';
+      //     totalExpenseElement.textContent = '0.00';
+      //     return;
+      //   }
+
+      sortedCategories.forEach(category => {
+        const total = categories[category];
+        totalExpense += total;
+        const div = document.createElement('div');
+        div.classList.add('category');
+        div.innerHTML = category + " Total amount : $" + total
+        summaryElement.appendChild(div);
+      });
+
+      totalExpenseElement.textContent = totalExpense;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        #quote-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #quote {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Quote of the Day</h1>
+        <div id="quote-container">
+            <p id="quote"></p>
+            <button id="new-quote">New Quote</button>
+        </div>
+    </div>
+    <script>
+        const quotes = [
+            "The best way to predict the future is to invent it. - Alan Kay",
+            "You miss 100% of the shots you don’t take. - Wayne Gretzky",
+            "Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "In the end, we will remember not the words of our enemies, but the silence of our friends. - Martin Luther King Jr.",
+            "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. - Ralph Waldo Emerson",
+            "Life is what happens when you’re busy making other plans. - John Lennon"
+        ];
+
+        // Function to get a random quote from the list
+        function getRandomQuote() {
+            const index = Math.floor(Math.random() * quotes.length);
+            return quotes[index];
+        }
+
+        // Function to display a new quote
+        function displayQuote() {
+            const quoteElement = document.getElementById('quote');
+            quoteElement.textContent = getRandomQuote();
+        }
+
+        // Event listener for the button
+        document.getElementById('new-quote').addEventListener('click', displayQuote);
+
+        // Display a quote when the page loads
+        window.onload = displayQuote;
+
+    </script>
+
+</body>
+
+</html>

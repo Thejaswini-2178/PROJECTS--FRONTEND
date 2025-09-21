@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Inventory Management System</h1>
+
+        <!-- Add Product Section -->
+        <div class="mb-6">
+            <input id="product-name" type="text" placeholder="Product Name"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <input id="product-quantity" type="number" placeholder="Quantity"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <button id="add-product-btn" class="bg-blue-500 text-white px-4 py-2 rounded">Add Product</button>
+        </div>
+
+        <!-- Inventory Section -->
+        <div id="inventory" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Product Inventory</h2>
+            <div id="products" class="space-y-4"></div>
+        </div>
+    </div>
+
+    
+    <script>
+        // Inventory data
+        let inventory = [];
+
+        // Fetch inventory data from server
+        const fetchInventory = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/inventory");
+                if (!response.ok) throw new Error("Failed to fetch inventory");
+                const data = await response.json();
+                console.log(data)
+                inventory = data.map((product) => ({
+                    id: product.id,
+                    name: product.name,
+                    quantity: product.quantity,
+                }));
+                renderInventory();
+            } catch (error) {
+                console.error("Error fetching inventory:", error);
+            }
+        };
+
+        // Add product to inventory
+        document.getElementById("add-product-btn").addEventListener("click", () => {
+            const name = document.getElementById("product-name").value;
+            const quantity = parseInt(
+                document.getElementById("product-quantity").value,
+                10
+            );
+
+            if (!name || isNaN(quantity)) {
+                alert("Please provide valid product details!");
+                return;
+            }
+
+            if (quantity < 0) {
+                alert("Stock quantity cannot be negative!");
+                return;
+            }
+
+            const newProduct = {
+                id: Date.now(),
+                name,
+                quantity,
+            };
+
+            inventory.push(newProduct);
+            saveToLocalStorage();
+            renderInventory();
+
+            // Clear input fields
+            document.getElementById("product-name").value = "";
+            document.getElementById("product-quantity").value = "";
+        });
+
+        // Save inventory to localStorage
+        const saveToLocalStorage = () => {
+            localStorage.setItem("inventory", JSON.stringify(inventory));
+        };
+
+        // Load inventory from localStorage
+        const loadFromLocalStorage = () => {
+            const storedInventory = localStorage.getItem("inventory");
+            if (storedInventory) inventory = JSON.parse(storedInventory);
+        };
+
+        // Render inventory dynamically
+        const renderInventory = () => {
+            const productsContainer = document.getElementById("products");
+            productsContainer.innerHTML = "";
+
+            inventory.forEach((product) => {
+                const productElement = document.createElement("div");
+                productElement.className =
+                    "p-4 border rounded flex justify-between items-center";
+
+                productElement.innerHTML = `
+      <div>
+        <p><strong>Name:</strong> ${product.name}</p>
+        <p><strong>Quantity:</strong> ${product.quantity}</p>
+      </div>
+      <div>
+        <button class="bg-yellow-500 text-white px-2 py-1 rounded mb-2" 
+          onclick="updateProduct(${product.id}, 'increase')">Increase</button>
+        <button class="bg-yellow-500 text-white px-2 py-1 rounded mb-2" 
+          onclick="updateProduct(${product.id}, 'decrease')">Decrease</button>
+        <button class="bg-red-500 text-white px-2 py-1 rounded" 
+          onclick="removeProduct(${product.id})">Remove</button>
+      </div>
+    `;
+
+                productsContainer.appendChild(productElement);
+            });
+        };
+
+        // Update product quantity
+        const updateProduct = (id, action) => {
+            const product = inventory.find((p) => p.id === id);
+            if (product) {
+                if (action === "increase") {
+                    product.quantity++;
+                } else if (action === "decrease") {
+                    if (product.quantity > 0) {
+                        product.quantity--;
+                    } else {
+                        alert("Stock quantity cannot be negative!");
+                    }
+                }
+                saveToLocalStorage();
+                renderInventory();
+            }
+        };
+
+        // Remove product
+        const removeProduct = (id) => {
+            inventory = inventory.filter((product) => product.id !== id);
+            saveToLocalStorage();
+            renderInventory();
+        };
+
+        // Initialize application
+        document.addEventListener("DOMContentLoaded",loadFromLocalStorage)
+           
+    </script>
+</body>
+
+</html>

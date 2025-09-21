@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Online Quiz App</h1>
+
+        <!-- Quiz Section -->
+        <div id="quizContainer" class="bg-white p-6 rounded shadow mb-6">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button id="submitQuiz" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                Submit Quiz
+            </button>
+        </div>
+
+        <!-- Score Section -->
+        <div id="scoreContainer" class="mt-6 text-center text-lg font-semibold hidden">
+            <!-- Score will be displayed here -->
+        </div>
+    </div>
+    <script>
+        const quizApp = {
+            questions: [],
+
+            userAnswers: {},
+
+            // Add questions to the quiz
+            addQuestion(question) {
+                this.questions.push(question);
+            },
+
+            // Randomize question order:The method Math.random() - 0.5 is used to shuffle the order of quiz questions randomly,
+            // so they appear in a different sequence each time. Without it, the questions would always appear in the 
+            // same predefined order, making the quiz less engaging and predictable.
+            randomizeQuestions() {
+                this.questions.sort(() => Math.random() - 0.5);
+            },
+
+            // Render quiz questions
+            renderQuiz() {
+                const quizContainer = document.getElementById("quizContainer");
+                quizContainer.innerHTML = ""; // Clear previous content
+
+                this.questions.forEach((question, index) => {
+                    const questionDiv = document.createElement("div");
+                    questionDiv.className = "mb-6";
+
+                    questionDiv.innerHTML = `
+          <p class="mb-2 font-semibold">${index + 1}. ${question.text}</p>
+          ${question.options.map((option, i) =>
+          `<label class="block">
+                  <input type="radio" name="question-${index}" value="${option}" />
+                  ${option}
+            </label>`).join("")}
+        `;
+                    quizContainer.appendChild(questionDiv);
+                });
+            },
+            // Collect user answers: in this index is :The index is used to create unique names 
+            // for each question's radio button group, ensuring the selected answers can be correctly identified and collected.
+            collectAnswers() {
+                this.questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(
+                        `input[name="question-${index}"]:checked`
+                    );
+
+                    //"UserAnswers is an object that accesses the ID of a question and stores the value of the selected option.
+                    this.userAnswers[question.id] = selectedOption
+                        ? selectedOption.value
+                        : null;
+                });
+            },
+            // Validate and score the quiz
+            calculateScore() {
+                let score = 0;
+                const unanswered = [];
+
+                this.questions.forEach((question) => {
+                    const userAnswer = this.userAnswers[question.id];
+
+                    if (!userAnswer) {
+                        unanswered.push(question.text);
+                        return;
+                    }
+
+                    const correctAnswer = question.options.find(
+                        (option) => option === question.correctAnswer
+                    );
+
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                    }
+                });
+
+                return { score, unanswered };
+            },
+
+            // Display score
+            displayScore(result) {
+                const scoreContainer = document.getElementById("scoreContainer");
+                scoreContainer.classList.remove("hidden");
+
+                if (result.unanswered.length > 0) {
+                    scoreContainer.innerHTML = `
+          <p>Your score: ${result.score}/${this.questions.length}</p>
+          <p class="text-red-500">Unanswered questions:</p>
+          <ul>${result.unanswered.map((q) => `<li>${q}</li>`).join("")}</ul>
+        `;
+                } else {
+                    scoreContainer.innerHTML = `<p>Your score: ${result.score}/${this.questions.length}</p>`;
+                }
+            },
+        };
+
+        // Add sample questions
+        quizApp.addQuestion({
+            id: 1,
+            text: "What is the capital of France?",
+            options: ["Paris", "London", "Rome", "Berlin"],
+            correctAnswer: "Paris",
+        });
+        quizApp.addQuestion({
+            id: 2,
+            text: "Which language is primarily used for web development?",
+            options: ["Python", "JavaScript", "C++", "Ruby"],
+            correctAnswer: "JavaScript",
+        });
+        quizApp.addQuestion({
+            id: 3,
+            text: "Is Earth the third planet from the Sun?",
+            options: ["True", "False"],
+            correctAnswer: "True",
+        });
+
+        // Randomize and render the quiz
+        quizApp.randomizeQuestions();
+        quizApp.renderQuiz();
+
+        // Handle quiz submission
+        document.getElementById("submitQuiz").addEventListener("click", () => {
+            quizApp.collectAnswers();
+            const result = quizApp.calculateScore();
+            quizApp.displayScore(result);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            width:500px;
+        }
+        #stopewatch{
+            margin: auto auto auto 100px ;
+            padding: 50px;
+            border-radius: 20px;
+            width:350px;
+            height:200px;
+            background-image: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url("https://img.freepik.com/premium-photo/sand-timer-background-hd-8k-wallpaper-stock-photographic-image_890746-110072.jpg");
+            h1{
+                text-align:left;
+                padding: 10px;
+                color:rgb(244, 248, 242);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+        }
+        .buttons img{
+            width:px;
+        }
+        .buttons img:hover{
+            border:2px solid white 
+        }
+        #stope,#play,#reset{
+            width:30px;
+            padding: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="stopewatch">
+        <h1 id="displayTime">00:00:00</h1>
+        <div class="buttons">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9kvrM3c9KpElkX3dkK5gl8tJYtNhsApmhiw&s" alt="" id="stope" onclick="watchStop()">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdoK-9l4vSvm-gyHZwkBi8B4WMmb3XGHRe3w&s" alt="" id="play" onclick="watchStart()">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7eCBaGjOhvCs38fZ7wy-ckG9toCxoA7Ko5w&s" alt="" id="reset" onclick="watchReset()">
+        </div>
+    </div>
+    <script>
+        var [seconds,minutes,hours]=[0,0,0];
+        var displayTime=document.getElementById("displayTime");
+        var timer=null;
+
+        function stopWatch(){
+            seconds++;
+            if(seconds==60){
+                seconds=0;
+                minutes++;
+                if(minutes==0){
+                    minutes=0;
+                    hours++;
+                }
+            }
+
+            var h=hours<10?"0"+hours:hours;
+            var m=minutes<10?"0"+minutes:minutes;
+            var s=seconds<10?"0"+seconds:seconds;
+
+            displayTime.innerHTML=h+":"+m+":"+s;
+        }
+        function watchStart(){
+            if(timer!==null){
+                clearInterval(timer);
+            }
+            timer= setInterval(stopWatch,1000);
+        }
+        function watchStop(){
+            clearInterval(timer);
+        }
+        function watchReset(){
+            clearInterval(timer);
+            [seconds,minutes,hours]=[0,0,0]
+            displayTime.innerHTML="00 : 00 : 00"
+        }
+    </script>
+    
+</body>
+</html>

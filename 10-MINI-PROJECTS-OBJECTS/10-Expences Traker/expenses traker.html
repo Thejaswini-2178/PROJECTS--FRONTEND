@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2, h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .categories {
+      margin-top: 20px;
+    }
+    .category {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #e9f5ff;
+      border: 1px solid #b3d8ff;
+      border-radius: 5px;
+    }
+    .category h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Expense Tracker</h2>
+    <form id="expenseForm">
+      <label for="category">Category</label>
+      <select id="category" required>
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="entertainment">Entertainment</option>
+      </select>
+
+      <label for="amount">Amount</label>
+      <input type="number" id="amount" placeholder="Enter amount" required>
+
+      <label for="description">Description</label>
+      <input type="text" id="description" placeholder="Enter description" required>
+
+      <button type="submit">Add Expense</button>
+    </form>
+
+    <div class="categories" id="categories"></div>
+    <h1 id="totalExpenses">Total Expenses: $0</h1>
+  </div>
+  <script>
+    const expenses = {
+      food: [],
+      transport: [],
+      entertainment: []
+    };
+
+    const form = document.getElementById("expenseForm");
+    const categoriesDiv = document.getElementById("categories");
+    const totalExpensesElement = document.getElementById("totalExpenses");
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const category = document.getElementById("category").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const description = document.getElementById("description").value;
+
+      if (amount <= 0) {
+        alert("Amount must be greater than 0");
+        return;
+      }
+
+      expenses[category].push({ amount, description });
+      updateCategories();
+      form.reset();
+    });
+
+    function updateCategories() {
+      categoriesDiv.innerHTML = '';
+      let totalExpensesAmount = 0;
+
+      for (const [category, expenseList] of Object.entries(expenses)) {
+        let categoryTotal = 0;
+
+        expenseList.forEach(exp => {
+          categoryTotal += exp.amount;
+        });
+
+        totalExpensesAmount += categoryTotal;
+
+        const categoryDiv = document.createElement("div");
+        categoryDiv.classList.add("category");
+
+        const heading = document.createElement('h3');
+        heading.textContent = `${category} - Total: $${categoryTotal.toFixed(2)}`;
+        categoryDiv.appendChild(heading);
+
+        const expenseListElement = document.createElement('ul');
+        expenseList.forEach(exp => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `${exp.description}: $${exp.amount.toFixed(2)}`;
+          expenseListElement.appendChild(listItem);
+        });
+
+        categoryDiv.appendChild(expenseListElement);
+        categoriesDiv.appendChild(categoryDiv);
+      }
+
+      // Update the total expenses for all categories
+      totalExpensesElement.textContent = `Total Expenses: $${totalExpensesAmount.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>

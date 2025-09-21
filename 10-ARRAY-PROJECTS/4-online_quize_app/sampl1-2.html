@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Online Quiz App</h1>
+
+        <!-- Quiz Section -->
+        <div id="quizContainer" class="bg-white p-6 rounded shadow mb-6">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button id="submitQuiz" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                Submit Quiz
+            </button>
+        </div>
+
+        <!-- Score Section -->
+        <div id="scoreContainer" class="mt-6 text-center text-lg font-semibold hidden">
+            <!-- Score will be displayed here -->
+        </div>
+    </div>
+    <script>
+        const quizApp = {
+            questions: [],
+            userAnswers: {},
+            addQuestion(question) {
+                this.questions.push(question)
+            },
+            randamizeQuestion() {
+                this.questions.sort(() => Math.random() - 0.5)
+            },
+            renderQuize() {
+                const quizeContainer = document.getElementById("quizContainer");
+                quizeContainer.innerHTML = ""
+                this.questions.forEach((question, index) => {
+                    const questionDiv = document.createElement("div");
+                    // questionDiv.className="mb-6"
+                    questionDiv.innerHTML = `
+                    <p>${index + 1}.${question.text}</p>
+                    ${question.options.map((option, i) => `<label>
+                        <input type="radio" name="question-${index}" value="${option}"/>${option}<br/>
+                        </label>`).join("")}
+                    `
+                    quizeContainer.appendChild(questionDiv)
+                })
+            },
+            collectAnswer() {
+                this.questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`
+                    input[name="question-${index}"]:checked
+                    `)
+                    // console.log(this.userAnswers)
+                    this.userAnswers[question.id] = selectedOption ? selectedOption.value : null;
+                    console.log(this.userAnswers)
+                })
+            },
+            calculateScore() {
+                let score = 0;
+                const unanswered = []
+                this.questions.forEach((question) => {
+                    const userAnswer = this.userAnswers[question.id]
+                    console.log("userAnswer", userAnswer)
+                    if (!userAnswer) {
+                        unanswered.push(question.text)
+                        return
+                    }
+                    console.log("userAnswer", userAnswer)
+                    const correctAnswer = question.options.find((option) => option === question.correctAnswer)
+                    if (userAnswer === correctAnswer) {
+                        score++
+                    }
+                })
+                return { score, unanswered }
+            },
+            displayScore(result) {
+                const scoreContainer = document.getElementById("scoreContainer")
+                scoreContainer.classList.remove("hidden")
+
+                if (result.unanswered.length > 0) {
+                    scoreContainer.innerHTML = `
+                    <p>Your Score:${result.score}/${this.questions.length}</p>
+                    <ul>${result.unanswered.map((q) => `<li>${q}</li>`).join("")}</ul>
+                    `
+                } else {
+                    scoreContainer.innerHTML = `<p>Your Score:${result.score}/${this.questions.length}</p>`
+                }
+            }
+        }
+        quizApp.addQuestion({
+            id: 1,
+            text: "What is the capital of France?",
+            options: ["Paris", "London", "Rome", "Berlin"],
+            correctAnswer: "Paris",
+        });
+        quizApp.addQuestion({
+            id: 2,
+            text: "Which language is primarily used for web development?",
+            options: ["Python", "JavaScript", "C++", "Ruby"],
+            correctAnswer: "JavaScript",
+        });
+        quizApp.addQuestion({
+            id: 3,
+            text: "Is Earth the third planet from the Sun?",
+            options: ["True", "False"],
+            correctAnswer: "True",
+        });
+        quizApp.randamizeQuestion();
+        quizApp.collectAnswer()
+        quizApp.renderQuize()
+
+        document.getElementById("submitQuiz").addEventListener("click", () => {
+            quizApp.collectAnswer()
+            const result = quizApp.calculateScore()
+            quizApp.displayScore(result)
+        })
+    </script>
+
+</body>
+
+</html>

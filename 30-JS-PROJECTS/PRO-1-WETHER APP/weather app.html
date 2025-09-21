@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title> weatherapp</title>
+    </head>
+    <body>
+        <!-- first stepp to add the label -->
+        <label>Select city</label>
+        <input type="search" id="city">
+        <button id="search">search</button>
+
+        <script>
+            // step-2 to get the city names and displaying this into the web browser :creating the function
+            function dispalyCity(){
+                var cityName=document.getElementById("city").value;
+                console.log(cityName)
+            }
+            document.getElementById("search").addEventListener("click",dispalyCity)
+           
+        </script>
+    </body>
+   
+</html>

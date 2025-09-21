@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <script src="app.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Inventory Management System</h1>
+
+        <!-- Add Product Form -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="productForm" class="space-y-4">
+                <input type="text" id="productName" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter product name" required />
+                <input type="number" id="productQuantity" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter quantity" required />
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add Product
+                </button>
+            </form>
+        </div>
+
+        <!-- Product List Section -->
+        <div id="productList" class="space-y-6">
+            <!-- Dynamic Product List Will Be Rendered Here -->
+        </div>
+
+        <!-- Total Quantity Section -->
+        <div class="bg-white p-4 rounded shadow mt-6">
+            <h2 class="text-lg font-semibold">Total Quantity: <span id="totalQuantity">0</span></h2>
+        </div>
+    </div>
+    <script>
+
+        const inventorySystem = {
+            products: [],
+            // Add a new product
+            addProduct(name, quantity) {
+                const productId = Date.now(); // Unique ID based on timestamp
+                const newProduct = {
+                    id: productId,
+                    name,
+                    quantity: parseInt(quantity),
+                };
+
+                this.products.push(newProduct);
+                this.renderProducts();
+                this.resetForm();
+            },
+
+            // Update product quantity
+            updateProductQuantity(id, newQuantity) {
+                const productIndex = this.products.findIndex(
+                    (product) => product.id === id
+                );
+                if (productIndex !== -1) {
+                    this.products[productIndex].quantity = newQuantity;
+                    this.renderProducts();
+                } else {
+                    alert("Product not found!");
+                }
+            },
+
+            // Remove a product
+            removeProduct(id) {
+                this.products = this.products.filter((product) => product.id !== id);
+                this.renderProducts();
+            },
+
+            // Calculate total quantity
+            calculateTotalQuantity() {
+                return this.products.reduce(
+                    (total, product) => total + product.quantity,
+                    0
+                );
+            },
+
+            // Sort products by name
+            sortProductsByName() {
+                this.products.sort((a, b) => a.name.localeCompare(b.name));
+                this.renderProducts();
+            },
+
+            // Render product list
+            renderProducts() {
+                const productList = document.getElementById("productList");
+                const totalQuantity = document.getElementById("totalQuantity");
+
+                productList.innerHTML = ""; // Clear existing list
+                this.products.forEach((product) => {
+                    const productDiv = document.createElement("div");
+                    productDiv.className = "bg-white p-4 rounded shadow";
+
+                    productDiv.innerHTML = `
+          <p class="font-semibold">${product.name} (Quantity: ${product.quantity})</p>
+          <div class="mt-4">
+            <button
+              class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+              onclick="inventorySystem.promptUpdateQuantity(${product.id})"
+            >
+              Update Quantity
+            </button>
+            <button
+              class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              onclick="inventorySystem.removeProduct(${product.id})"
+            >
+              Remove
+            </button>
+          </div>
+        `;
+
+                    productList.appendChild(productDiv);
+                });
+
+                // Update total quantity
+                totalQuantity.textContent = this.calculateTotalQuantity();
+            },
+
+            // Prompt to update product quantity
+            promptUpdateQuantity(id) {
+                const newQuantity = prompt("Enter new quantity:");
+                if (newQuantity && !isNaN(newQuantity) && parseInt(newQuantity, 10) >= 0) {
+                    this.updateProductQuantity(id, parseInt(newQuantity, 10));
+                } else {
+                    alert("Invalid quantity!");
+                }
+            },
+
+            // Reset the form
+            resetForm() {
+                document.getElementById("productName").value = "";
+                document.getElementById("productQuantity").value = "";
+            },
+        };
+
+        // Handle Add Product form submission
+        document.getElementById("productForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("productName").value.trim();
+            const quantity = document.getElementById("productQuantity").value.trim();
+
+            if (name && quantity && parseInt(quantity, 10) > 0) {
+                inventorySystem.addProduct(name, quantity);
+            } else {
+                alert("Please enter valid product details!");
+            }
+        });
+
+    </script>
+</body>
+
+</html>

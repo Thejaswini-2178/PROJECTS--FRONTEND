@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <!-- <script src="app.js" defer></script> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center mb-6">Library Management System</h1>
+
+    <!-- Add Book Form -->
+    <div class="bg-white p-6 rounded shadow mb-6">
+      <form id="bookForm" class="space-y-4">
+        <input type="text" id="bookTitle" class="w-full px-3 py-2 border rounded-md" placeholder="Enter book title"
+          required />
+        <input type="text" id="bookAuthor" class="w-full px-3 py-2 border rounded-md" placeholder="Enter author name"
+          required />
+        <button type="submit" id="bookSubmitButton"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+          Add Book
+        </button>
+      </form>
+    </div>
+    <!-- Book List Section -->
+    <div id="bookList" class="space-y-6">
+      <!-- Dynamic Book List Will Be Rendered Here -->
+    </div>
+  </div>
+  <script>
+    const libraryManagement = {
+      books: [],
+      renderBooks() {
+        const bookList = document.getElementById("bookList");
+        bookList.innerHTML = ""; // Clear existing list
+
+        this.books.forEach((book) => {
+          const bookDiv = document.createElement("div");
+          bookDiv.className = "bg-white p-4 rounded shadow";
+
+
+          bookDiv.innerHTML = `
+              <p class="font-semibold">${book.title} by ${book.author}</p>
+              <p class="text-sm text-gray-600">${book.isAvailable ? "Available" : "Borrowed"
+            }</p>
+              <div class="mt-4">
+                ${book.isAvailable
+              ? `<button
+                        class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                        onclick="libraryManagement.borrowBook(${book.id})"
+                      >
+                        Borrow
+                      </button>`
+              : `<button
+                        class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                        onclick="libraryManagement.returnBook(${book.id})"
+                      >
+                        Return
+                      </button>`
+            }
+              </div>
+            `
+          bookList.appendChild(bookDiv);
+        });
+      },
+    };
+
+  </script>
+</body>
+
+</html>

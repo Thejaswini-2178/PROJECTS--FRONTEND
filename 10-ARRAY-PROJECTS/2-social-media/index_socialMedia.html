@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Editor</title>
+    <script src="app.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Social Media Post Editor</h1>
+
+        <!-- Add Post Section -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="addPostForm" class="space-y-4">
+                <textarea id="postContent" rows="3" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="What's on your mind?" required></textarea>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add Post
+                </button>
+            </form>
+        </div>
+
+        <!-- Posts Section -->
+        <div id="postsContainer" class="space-y-4">
+            <!-- Dynamic posts will appear here -->
+        </div>
+    </div>
+    <script>
+        const socialMediaApp = {
+            posts: [],
+
+            // Add a new post
+            addPost(content) {
+                const newPost = {
+                    id: Date.now(), // Unique ID based on timestamp
+                    content,
+                    likes: 0,
+                    comments: [],
+                    date: new Date(),
+                };
+                this.posts.push(newPost);
+            },
+
+            // Edit an existing post
+            editPost(postId, newContent) {
+                const post = this.posts.find((p) => p.id === postId);
+                if (post) post.content = newContent;
+            },
+
+            // Like a post
+            likePost(postId) {
+                const post = this.posts.find((p) => p.id === postId);
+                if (post) post.likes++;
+            },
+
+            // Add a comment to a post
+            addComment(postId, comment) {
+                const post = this.posts.find((p) => p.id === postId);
+                if (post) post.comments.push(comment);
+            },
+
+            // Clone a post
+            clonePost(postId) {
+                const post = this.posts.find((p) => p.id === postId);
+                if (post) {
+                    const clonedPost = { ...post, id: Date.now(), date: new Date() };
+                    this.posts.push(clonedPost);
+                }
+            },
+
+            // Render all posts
+            renderPosts() {
+                const container = document.getElementById("postsContainer");
+                container.innerHTML = ""; // Clear existing posts
+
+                this.posts.forEach((post) => {
+                    const postDiv = document.createElement("div");
+                    postDiv.className = "bg-white p-4 rounded shadow";
+
+                    postDiv.innerHTML = `
+          <p class="text-lg">${post.content}</p>
+          <div class="mt-4 flex justify-between items-center">
+            <span>${post.likes} Likes</span>
+            <button
+              class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+              onclick="socialMediaApp.likePost(${post.id}); socialMediaApp.renderPosts();"
+            >
+              Like
+            </button>
+            <button
+              class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+              onclick="editPostPrompt(${post.id})"
+            >
+              Edit
+            </button>
+            <button
+              class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
+              onclick="socialMediaApp.clonePost(${post.id}); socialMediaApp.renderPosts();"
+            >
+              Clone
+            </button>
+          </div>
+        `;
+
+                    container.appendChild(postDiv);
+                });
+            },
+        };
+
+        // Prompt user for editing a post
+        function editPostPrompt(postId) {
+            const post = socialMediaApp.posts.find((p) => p.id === postId);
+            if (post) {
+                const newContent = prompt("Edit your post:", post.content);
+                if (newContent) {
+                    socialMediaApp.editPost(postId, newContent);
+                    socialMediaApp.renderPosts();
+                }
+            }
+        }
+        // Handle the Add Post form submission
+        document.getElementById("addPostForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const content = document.getElementById("postContent").value;
+            socialMediaApp.addPost(content);
+            socialMediaApp.renderPosts();
+            e.target.reset(); // Clear the form
+        });
+    </script>
+</body>
+</html>

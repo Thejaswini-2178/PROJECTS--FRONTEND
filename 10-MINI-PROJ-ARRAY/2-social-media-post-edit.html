@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Post Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background-color: #f0f0f5;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .post {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .post p {
+      margin: 5px 0;
+    }
+
+    .post .actions button {
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .post .actions button:hover {
+      background-color: #0056b3;
+    }
+
+    .comment {
+      margin-top: 5px;
+      padding-left: 15px;
+      font-style: italic;
+      color: #666;
+    }
+
+    input[type="text"] {
+      width: 75%;
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Social Media Post Manager</h1>
+
+  <div id="postFeed"></div>
+
+  <h3>Add a New Post</h3>
+  <input type="text" id="newPostContent" placeholder="Enter post content">
+  <button onclick="addPost()">Add Post</button>
+
+  <h3>Search, Sort, and Validate Posts</h3>
+  <input type="text" id="searchKeyword" placeholder="Enter keyword">
+  <button onclick="searchPosts(document.getElementById('searchKeyword').value)">Search</button>
+  <button onclick="checkComments()">Check Comments</button>
+  <button onclick="validatePosts()">Validate Posts</button>
+  <button onclick="sortPostsByLikes()">Sort by Likes</button>
+
+  <script>
+    let posts = [];
+
+    function displayPosts() {
+      const postFeed = document.getElementById('postFeed');
+      postFeed.innerHTML = '';
+
+      posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.innerHTML = `
+        <p><strong>Post ID:</strong> ${post.id}</p>
+        <p>${post.content}</p>
+        <p><strong>Likes:</strong> ${post.likes}</p>
+        <p><strong>Comments:</strong></p>
+        ${post.comments.length > 0
+            ? post.comments.map(comment => `<p class="comment">- ${comment}</p>`).join('')
+            : '<p class="comment">No comments yet</p>'}
+        <div class="actions">
+          <button onclick="likePost(${post.id})">Like</button>
+          <button onclick="editPost(${post.id})">Edit</button>
+          <button onclick="addComment(${post.id})">Add Comment</button>
+          <button onclick="clonePost(${post.id})">Clone</button>
+        </div>
+      `;
+        postFeed.appendChild(postDiv);
+      });
+    }
+
+    function addPost() {
+      const content = document.getElementById('newPostContent').value.trim();
+      if (content === '') {
+        alert('Post content cannot be empty!');
+        return;
+      }
+      const newPost = { id: posts.length + 1, content, likes: 0, comments: [] };
+      posts.push(newPost);
+      displayPosts();
+      document.getElementById('newPostContent').value = '';
+    }
+
+    function editPost(postId) {
+      const post = posts.find(p => p.id === postId);
+      const newContent = prompt('Edit Post Content:', post.content);
+      if (newContent && newContent.trim() !== '') {
+        post.content = newContent;
+        displayPosts();
+      }
+    }
+
+    function likePost(postId) {
+      const post = posts.find(p => p.id === postId);
+      post.likes++;
+      displayPosts();
+    }
+
+    function addComment(postId) {
+      const comment = prompt('Enter your comment:');
+      if (comment && comment.trim() !== '') {
+        const post = posts.find(p => p.id === postId);
+        post.comments.push(comment);
+        displayPosts();
+      }
+    }
+
+    function searchPosts(keyword) {
+      const results = posts.filter(post => post.content.includes(keyword));
+      if (results.length > 0) {
+        alert(`Found ${results.length} post(s) matching "${keyword}"`);
+        console.log(results);
+      } else {
+        alert('No posts match your search!');
+      }
+    }
+
+    function clonePost(postId) {
+      const postToClone = posts.find(p => p.id === postId);
+      if (postToClone) {
+        const clonedPost = { ...postToClone, id: posts.length + 1, likes: 0, comments: [] };
+        posts.push(clonedPost);
+        displayPosts();
+      }
+    }
+
+    function checkComments() {
+      const hasComments = posts.some(post => post.comments.length > 0);
+      alert(hasComments ? 'Some posts have comments' : 'No posts have comments');
+    }
+
+    function validatePosts() {
+      const allValid = posts.every(post => post.content.trim() !== '' && typeof post.likes === 'number');
+      alert(allValid ? 'All posts are valid' : 'Some posts are invalid');
+    }
+
+    function sortPostsByLikes() {
+      posts.sort((a, b) => b.likes - a.likes);
+      displayPosts();
+    }
+
+    displayPosts();
+  </script>
+
+</body>
+
+</html>

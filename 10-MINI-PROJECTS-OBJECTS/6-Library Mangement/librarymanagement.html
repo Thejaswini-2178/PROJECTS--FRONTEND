@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .book-list {
+      margin-top: 20px;
+    }
+    .book-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .book-list li {
+      margin: 10px 0;
+    }
+    .book-list button {
+      width: auto;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <h1>Library Management System</h1>
+
+    <h3>Add Book</h3>
+    <input type="text" id="title" placeholder="Book Title" required>
+    <input type="text" id="author" placeholder="Book Author" required>
+    <button type="button" onclick="addBook()">Add Book</button>
+
+    <div class="book-list">
+      <h3>Books in Library</h3>
+      <ul id="bookList"></ul>
+    </div>
+  </div>
+
+  <script>
+    let books = [];
+
+    function addBook() {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+
+      if(title && author) {
+        const newBook = {title, author, isAvailable: true};
+        books.push(newBook)
+        clearInput()
+        listBooks() 
+      }
+    }
+
+    function clearInput() {
+      document.getElementById("title").value = "";
+      document.getElementById("title").value = "";
+    }
+
+    function listBooks() {
+      const bookList = document.getElementById("bookList");
+      bookList.innerHTML = "";
+
+      books.forEach((book, index) => {
+        const listItem = document.createElement("li");
+        const bookDetails = Object.entries(book)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(",")
+
+        listItem.innerHTML = `${bookDetails}
+           <button onclick="lendBook(${index})" ${!book.isAvailable ? 'disabled' : ''}>Lend</button>
+           <button onclick="returnBook(${index})" ${book.isAvailable ? 'disabled' : ''}>Return</button>
+        `;  
+        bookList.appendChild(listItem)
+      })
+    }
+
+    function lendBook(index) {
+      if(books[index].isAvailable) {
+        books[index].isAvailable = false;
+        listBooks()
+      } else {
+        alert("this book is already lent out")
+      }
+    }
+
+    function returnBook(index) {
+      if(!books[index].isAvailable) {
+        books[index].isAvailable = true
+        listBooks()
+      } else {
+        alert("this book is already available")
+      }
+    }
+
+  </script>
+
+</body>
+</html>

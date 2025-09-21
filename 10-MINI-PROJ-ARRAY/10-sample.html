@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center mb-6">Expense Tracker</h1>
+
+    <!-- Add Expense Section -->
+    <div class="bg-white p-6 rounded shadow mb-6">
+      <form id="addExpenseForm" class="space-y-4">
+        <input type="text" id="category" class="w-full px-3 py-2 border rounded-md"
+          placeholder="Enter category (e.g., Food, Travel)" required />
+        <input type="number" id="amount" class="w-full px-3 py-2 border rounded-md" placeholder="Enter amount"
+          required />
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+          Add Expense
+        </button>
+      </form>
+    </div>
+
+    <!-- Categories Section -->
+    <div id="categoriesContainer" class="space-y-6">
+      <!-- Dynamic Categories Will Be Rendered Here -->
+    </div>
+  </div>
+  <script>
+    const expenseTraker={
+      expenses:{},
+      addExpenses(category,amount){
+        if(amount<=0){
+          alert("please enter the correct amount")
+          return
+        }
+        if(!this.expenses[category]){
+          this.expenses[category]=[]
+        }
+        this.expenses[category].push({
+          id:Date.now(),
+          amount:parseFloat(amount),
+          date:new Date()
+        })
+        this.renderCatagories()
+      },
+      getTotalExpenses(category){
+       return this.expenses[category].reduce((result,expense)=>result+expense.amount,0)
+      },
+      renderCatagories(){
+        const container=document.getElementById("categoriesContainer")
+        container.innerHTML=""
+
+        Object.keys(this.expenses).forEach(category=>{
+          const categoryDiv=document.createElement("div")
+          categoryDiv.innerHTML=`
+          <h2>${category} - Total: $${this.getTotalExpenses(category)}</h2>
+          <ul>${this.expenses[category].map(expense=>`<li>${expense.amount}-${ new Date(expense.date).toLocaleDateString()}<button onclick="expenseTraker.removeExpenses('${category}',${expense.id})" style="color:red">&nbsp;&nbsp;&nbsp;Remove</button></li>`).join()}</ul>
+          `
+          container.appendChild(categoryDiv)
+        })
+      },
+      removeExpenses(category,expenseId){
+        this.expenses[category] = this.expenses[category].filter(expense => expense.id !== expenseId);
+
+        if (this.expenses[category].length === 0) {
+          delete this.expenses[category];
+        }
+
+        this.renderCatagories();
+      },
+    }
+    document.getElementById("addExpenseForm").addEventListener("submit",function(e){
+      e.preventDefault()
+      const category=document.getElementById("category").value.trim()
+      const amount=parseFloat(document.getElementById("amount").value)
+      expenseTraker.addExpenses(category,amount)
+      e.target.reset()
+    })
+
+    
+  </script>
+</body>
+
+</html>

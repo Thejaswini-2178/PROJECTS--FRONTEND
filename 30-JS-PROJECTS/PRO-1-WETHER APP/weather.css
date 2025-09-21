@@ -1,0 +1,43 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+div#weatherSheet {
+    display: none;
+    margin: auto;
+    padding:20px
+}
+table,th,td {
+    margin: auto;
+    /* border: 1px solid white;  */
+    border-collapse: collapse;
+    border-radius: 25px; 
+    background-image: linear-gradient(rgb(149, 14, 227),rgb(241, 182, 182));
+    color:black
+}
+th, td {
+    width:20%;
+    height: 20px;
+    padding:2px;
+    margin: auto;
+}
+#container{
+    padding:30px;
+    margin:auto;
+    color: white;
+    width:400px;
+    height:300px;
+    background-image: linear-gradient(rgb(76, 6, 123),rgb(152, 30, 148));
+}
+input{
+    border-radius: 10px;
+}
+h1{
+    padding:40px;
+    font-family:cursive;
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        body {
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+        }
+        div#weatherSheet {
+            display: none;
+            margin: auto;
+            padding:20px
+        }
+        table,th,td {
+            margin: auto;
+            /* border: 1px solid white;  */
+            border-collapse: collapse;
+            border-radius: 25px; 
+            background-image: linear-gradient(rgb(149, 14, 227),rgb(241, 182, 182));
+            color:black
+        }
+        th, td {
+            width:20%;
+            height: 20px;
+            padding:2px;
+            margin: auto;
+        }
+        #container{
+            padding:30px;
+            margin:auto;
+            color: white;
+            width:400px;
+            height:300px;
+            background-image: linear-gradient(rgb(76, 6, 123),rgb(152, 30, 148));
+        }
+        input{
+            border-radius: 10px;
+        }
+        h1{
+            padding:40px;
+            font-family:cursive;
+        }
+        th{
+            color:rgb(31, 5, 2);
+        }
+        td{
+            color:white
+        }
+    </style>
+</head>
+<body>
+    <!-- step-1 create a lable with dropdown list to bring the city names -->
+    <div id="container">
+        <h1>Weather APP</h1>
+         <label for="city">Select the city name</label>
+         <input list="item" name="city" id="city" onchange="getCityWeather()">
+         <datalist id="item"></datalist> <br><br>
+    <!--step-5 now creating the table to display the wether informationin the table  -->
+         <div id="weatherSheet">
+            <table>
+                <tr>
+                    <th>CityName</th>
+                    <th>Weather</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td id="cityNameIs"></td>
+                    <td id="weather"></td>
+                    <td id="temp"></td>
+                    <td id="humidity"></td>
+                    <td id="description"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        // step-2 create a function wchich is linked with the dropdown list (onchange)
+        function getCityWeather() {
+            var cityName = document.getElementById("city").value;
+            console.log(cityName)
+             // step-6 take the api url from the website for the weather information 
+             var myWether_url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=21f993eae64e37e7a5c268139261f61c";
+             // step-7 fetch the data and display in the console which will provide the rawdata
+            fetch(myWether_url).then(function (rawdata) {
+                return rawdata.json();
+            }).then(function (data) {  //now it wiii get the origenal data,
+                console.log(data);
+            // step-8  getting the data for dispalyin it inthe table 
+                document.getElementById("weatherSheet").style.display = "block"
+                document.getElementById("cityNameIs").innerHTML = data.name;
+                document.getElementById("weather").innerHTML = data.weather[0].main;
+                document.getElementById("temp").innerHTML = data.main.temp;
+                document.getElementById("humidity").innerHTML = data.main.humidity;
+                document.getElementById("description").innerHTML = data.weather[0].description
+            })
+        }
+        // step-3 display the enterd city name in the console
+        function displayCities(cities){
+            var cityName = document.getElementById("item");
+            for(var i=0;i<cities.length;i++){
+                var option = document.createElement("option");
+                option.value = cities[i].name;
+                option.innerHTML = cities[i].name;
+                cityName.appendChild(option);
+            }
+
+        }
+
+        // step-4 create another  function to display the city  with the corect spellings names by using the city url
+        function getCityNames() {
+            // step-4.2 by using the db.json from the local server we can bring the asp for gathering the all city names into the drop down list
+            var myCity_url = "http://localhost:3000/city"
+            fetch(myCity_url).then(function (rawdata) {
+                return rawdata.json();
+            }).then(function (data) {
+                console.log(data.cities)
+                displayCities(data.cities)
+            })
+        }
+        getCityNames()
+    </script>
+</body>
+
+</html>

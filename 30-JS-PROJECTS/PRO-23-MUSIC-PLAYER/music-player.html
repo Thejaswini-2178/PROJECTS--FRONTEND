@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+        .player-container {
+            width: 300px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .controls button {
+            background-color: #ff4d00;
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .controls button:hover {
+            background-color: #f05b41;
+        }
+        .controls button:disabled {
+            background-color: #d6d6d6;
+            cursor: not-allowed;
+        }
+        .progress-container {
+            margin: 10px 0;
+        }
+        .progress-container input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <audio id="audioPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        <div class="controls">
+            <button id="playStopButton" onclick="togglePlayStop()">Play</button>
+        </div>
+        <div class="progress-container">
+            <input id="progressBar" type="range" value="0" min="0" max="100">
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playStopButton = document.getElementById('playStopButton');
+        const progressBar = document.getElementById('progressBar');
+
+        // Update progress bar as audio plays
+        audioPlayer.addEventListener('timeupdate', () => {
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.value = progress;
+        });
+
+        // Seek audio when progress bar is changed
+        progressBar.addEventListener('input', () => {
+            const newTime = (progressBar.value / 100) * audioPlayer.duration;
+            audioPlayer.currentTime = newTime;
+        });
+
+        function togglePlayStop() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playStopButton.textContent = 'Stop';
+            } else {
+                audioPlayer.pause();
+                playStopButton.textContent = 'Play';
+            }
+        }
+    </script>
+</body>
+</html>

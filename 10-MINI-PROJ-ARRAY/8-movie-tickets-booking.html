@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #seating {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .seat {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+
+        .seat.regular {
+            background-color: #a0d8ef;
+        }
+
+        .seat.VIP {
+            background-color: #ffd700;
+        }
+
+        .seat.booked {
+            background-color: red;
+            cursor: not-allowed;
+        }
+
+        .controls button,
+        .actions button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        .controls button:hover,
+        .actions button:hover {
+            background-color: #555;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            width: calc(100% - 20px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Movie Ticket Booking System</h1>
+        <div id="seating"></div>
+        <div class="controls">
+            <button onclick="addSeat('regular')">Add Regular Seat</button>
+            <button onclick="addSeat('VIP')">Add VIP Seat</button>
+        </div>
+        <div class="actions">
+            <input id="seat-id" placeholder="Enter Seat ID">
+            <button onclick="bookSeat()">Book Seat</button>
+            <button onclick="cancelSeat()">Cancel Booking</button>
+        </div>
+    </div>
+    <script>
+        var seats = [];
+
+        function renderSeats() {
+            var seating = document.getElementById('seating');
+            seating.innerHTML = '';
+            seats.forEach(function (seat) {
+                var seatDiv = document.createElement('div');
+                seatDiv.className = 'seat ' + seat.type + (seat.booked ? ' booked' : '');
+                seatDiv.innerHTML = seat.id;
+                seating.appendChild(seatDiv);
+
+            });
+        }
+
+        function addSeat(type) {
+            var id = 'S' + (seats.length + 1);
+            seats.push({ id: id, type: type, booked: false });
+            renderSeats();
+        }
+
+        function bookSeat() {
+            var seatId = document.getElementById('seat-id').value;
+            var seat = seats.find(function (s) {
+                return s.id === seatId;
+            });
+            if (seat && !seat.booked) {
+                seat.booked = true;
+                renderSeats();
+                alert('Seat ' + seatId + ' booked successfully!');
+            } else {
+                alert('Seat not available or already booked!');
+            }
+        }
+
+        function cancelSeat() {
+            var seatId = document.getElementById('seat-id').value;
+            var seat = seats.find(function (s) {
+                return s.id === seatId;
+            });
+            if (seat && seat.booked) {
+                seat.booked = false;
+                renderSeats();
+                alert('Seat ' + seatId + ' booking canceled!');
+            } else {
+                alert('Seat not booked yet!');
+            }
+        }
+    </script>
+</body>
+
+</html>

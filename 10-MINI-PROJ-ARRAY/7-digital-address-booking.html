@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Address Book</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    input,
+    button {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button.delete {
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Digital Address Book</h1>
+    <div>
+      <input id="name" type="text" placeholder="Name">
+      <input id="email" type="email" placeholder="Email">
+      <input id="phone" type="text" placeholder="Phone">
+      <button onclick="addContact()">Add Contact</button>
+    </div>
+    <div>
+      <input id="search" type="text" placeholder="Search by name or email" oninput="searchContacts()">
+    </div>
+    <ul id="contact-list"></ul>
+  </div>
+
+  <script>
+    var contacts = [];
+
+    function addContact() {
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var phone = document.getElementById("phone").value;
+
+      if (name && email && phone) {
+        contacts.push({ name: name, email: email, phone: phone });
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        displayContacts();
+      } else {
+        alert("Please fill all fields.");
+      }
+    }
+
+    function searchContacts() {
+      var query = document.getElementById("search").value.toLowerCase();
+      var filteredContacts = contacts.filter(function (contact) {
+        return contact.name.toLowerCase().includes(query) || contact.email.toLowerCase().includes(query);
+      });
+      displayContacts(filteredContacts);
+    }
+
+    function deleteContact(email) {
+      contacts = contacts.filter(function (contact) {
+        return contact.email !== email;
+      });
+      displayContacts();
+    }
+
+    function displayContacts(filteredContacts) {
+      var list = document.getElementById("contact-list");
+      list.innerHTML = "";
+      var contactsToDisplay = filteredContacts || contacts;
+
+      contactsToDisplay.forEach(function (contact) {
+        var li = document.createElement("li");
+        li.textContent = contact.name + " - " + contact.email + " - " + contact.phone;
+
+        var deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "delete";
+        deleteBtn.onclick = function () {
+          deleteContact(contact.email);
+        };
+
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            background-color: rgb(243, 233, 242);
+        }
+        .popup {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1000;
+        }
+        .popup img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        .popup button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #45a049;
+        }
+        .overlay {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #button{
+            background-color: orange;
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            width: 70px;
+            height: 30px;
+            cursor: pointer;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="button">Submit</button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXMzibX-6ZJXoNWai1gpfkKFqfyZ0euPjcbg&s" alt="Thank You">
+        <h1>Thank You!</h1>
+        <p>You are details are registered successfully!</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+
+    <script>
+        document.getElementById('button').addEventListener('click', function() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        });
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Management</title>
+    <script src="app.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">User Profile Management</h1>
+
+        <!-- Add / Update User Form -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="userForm" class="space-y-4">
+                <input type="text" id="userName" class="w-full px-3 py-2 border rounded-md" placeholder="Enter name"
+                    required />
+                <input type="email" id="userEmail" class="w-full px-3 py-2 border rounded-md" placeholder="Enter email"
+                    required />
+                <select id="userRole" class="w-full px-3 py-2 border rounded-md" required>
+                    <option value="Subscriber">Subscriber</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <button type="submit" id="userSubmitButton"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add User
+                </button>
+            </form>
+        </div>
+
+        <!-- User List Section -->
+        <div id="userList" class="space-y-6">
+            <!-- Dynamic User List Will Be Rendered Here -->
+        </div>
+    </div>
+    <script>
+        const userManagement = {
+            users: [],
+            isEditing: false,
+            editingEmail: null,
+
+            // Handle Add or Update User
+            handleUserForm(name, email, role) {
+                if (this.isEditing) {
+                    this.updateUser(name, email, role);
+                } else {
+                    this.addUser(name, email, role);
+                }
+            },
+
+            // Add a new user
+            addUser(name, email, role) {
+                if (!this.validateEmail(email)) {
+                    alert("Invalid email address!");
+                    return;
+                }
+
+                const newUser = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    role,
+                    preferences: {},
+                };
+
+                this.users.push(newUser);
+                this.renderUsers();
+                this.resetForm();
+            },
+
+            // Update an existing user
+            updateUser(name, email, role) {
+                this.users = this.users.map((user) =>
+                    user.email === email ? { ...user, name, role } : user
+                );
+                this.renderUsers();
+                this.resetForm();
+            },
+
+            // Validate email format
+            validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            },
+
+            // Delete a user
+            deleteUser(email, requesterRole) {
+                if (requesterRole !== "Admin") {
+                    alert("Only Admins can delete users!");
+                    return;
+                }
+
+                this.users = this.users.filter((user) => user.email !== email);
+                this.renderUsers();
+            },
+
+            // Edit user
+            editUser(email) {
+                const user = this.users.find((user) => user.email === email);
+                if (user) {
+                    document.getElementById("userName").value = user.name;
+                    document.getElementById("userEmail").value = user.email;
+                    document.getElementById("userEmail").setAttribute("readonly", "true"); // Prevent email editing
+                    document.getElementById("userRole").value = user.role;
+                    document.getElementById("userSubmitButton").textContent = "Update User";
+
+                    this.isEditing = true;
+                    this.editingEmail = email;
+                }
+            },
+
+            // Reset the form
+            resetForm() {
+                document.getElementById("userName").value = "";
+                document.getElementById("userEmail").value = "";
+                document.getElementById("userEmail").removeAttribute("readonly"); // Allow email input for new user
+                document.getElementById("userRole").value = "Subscriber";
+                document.getElementById("userSubmitButton").textContent = "Add User";
+
+                this.isEditing = false;
+                this.editingEmail = null;
+            },
+
+            // Render user list
+            renderUsers() {
+                const userList = document.getElementById("userList");
+                userList.innerHTML = ""; // Clear existing list
+
+                this.users.forEach((user) => {
+                    const userDiv = document.createElement("div");
+                    userDiv.className = "bg-white p-4 rounded shadow";
+
+                    userDiv.innerHTML = `
+          <p class="font-semibold">${user.name} (${user.role})</p>
+          <p class="text-sm text-gray-600">${user.email}</p>
+          <div class="mt-4">
+            <button
+              class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+              onclick="userManagement.editUser('${user.email}')"
+            >
+              Edit
+            </button>
+            <button
+              class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+              onclick="deleteUserPrompt('${user.email}')"
+            >
+              Delete
+            </button>
+          </div>
+        `;
+
+                    userList.appendChild(userDiv);
+                });
+            },
+        };
+
+        // Handle Add / Update User form submission
+        document.getElementById("userForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("userName").value.trim();
+            const email = document.getElementById("userEmail").value.trim();
+            const role = document.getElementById("userRole").value;
+
+            userManagement.handleUserForm(name, email, role);
+        });
+
+        // Prompt for deleting a user
+        function deleteUserPrompt(email) {
+            const role = prompt("Enter your role (Admin/Subscriber):", "Subscriber");
+            userManagement.deleteUser(email, role);
+        }
+    </script>
+</body>
+
+</html>

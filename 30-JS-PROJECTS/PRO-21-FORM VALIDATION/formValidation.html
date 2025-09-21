@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form{
+            margin: auto;
+            margin-top: 100px;
+            width:630px;
+            background-color: rgb(206, 224, 224);
+            padding: 10px;
+            color:rgb(8, 8, 49);
+            text-align: center;
+            h2{
+                color:green;
+                text-align: center;
+            }
+        }
+        .error {
+            color: red;
+            display: none; /* Initially hide the error messages */
+        }
+        .error.visible {
+            display: inline; /* Show when there is an error */
+        }
+        span::before {
+            content: "*";
+            margin-right: 5px;
+        }
+        button {
+            margin-left: 50px;
+            width: 80px;
+            height:30px;
+            border-radius: 10px;
+        }
+        #submitError{
+            display:none;
+            color:red;
+        }
+        label{
+            width:50px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<form id="registrationForm">
+    <h2>Registration Form</h2>
+    <label for="name">Name (required):</label>
+    <input type="text" id="name" name="name" required><br>
+    <span class="error" id="nameError">Name is required.</span>
+    <br><br>
+
+    <label for="email">Email (required):</label>
+    <input type="email" id="email" name="email" required><br>
+    <span class="error" id="emailError">Email is required.</span>
+    <br><br>
+
+    <label for="password">Password  (required)<br>min 6 characters:</label>
+    <input type="password" id="password" name="password" required minlength="6"><br>
+    <span class="error" id="passwordError">Password is required.</span>
+    <br><br>
+
+    <button type="submit">Submit</button><br>
+    <span id="submitError">Please Submit</span>
+</form>
+
+<script>
+    var form = document.getElementById('registrationForm');
+
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+
+        // Clear previous error messages
+        document.getElementById('nameError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        
+        // Hide error messages
+        document.getElementById('nameError').classList.remove('visible');
+        document.getElementById('emailError').classList.remove('visible');
+        document.getElementById('passwordError').classList.remove('visible');
+
+        // Name validation
+        var name = document.getElementById('name').value;
+        if (!name) {
+            document.getElementById('nameError').textContent = 'Name is required.';
+            document.getElementById('nameError').classList.add('visible');
+            valid = false;
+        } else if (!/^[A-Za-z\s]+$/.test(name)) { // Correct regex validation
+            document.getElementById('nameError').textContent = 'Please enter only alphabetic characters.';
+            document.getElementById('nameError').classList.add('visible');
+            valid = false;
+        }
+
+        // Email validation
+        var email = document.getElementById('email').value;
+        if (!email) {
+            document.getElementById('emailError').textContent = 'Email is required.';
+            document.getElementById('emailError').classList.add('visible');
+            valid = false;
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            document.getElementById('emailError').textContent = 'Email is invalid.';
+            document.getElementById('emailError').classList.add('visible');
+            valid = false;
+        }
+
+        // Password validation
+        var password = document.getElementById('password').value;
+        if (!password) {
+            document.getElementById('passwordError').textContent = 'Password is required.';
+            document.getElementById('passwordError').classList.add('visible');
+            valid = false;
+        } else if (password.length < 6) {
+            document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+            document.getElementById('passwordError').classList.add('visible');
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+</body>
+</html>
+

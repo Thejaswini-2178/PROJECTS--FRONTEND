@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Address Book</h1>
+
+    <form id="contactForm">
+        <input type="hidden" id="contactId">
+        <label>Name:</label>
+        <input type="text" id="name" required><br><br>
+        <label>Email:</label>
+        <input type="email" id="email" required><br><br>
+        <button type="submit">Save</button>
+    </form>
+
+    <h3>Search</h3>
+    <input type="text" id="search" placeholder="Search by name">
+
+    <h3>Contacts</h3>
+    <div id="contactList"></div>
+
+    <script>
+        var contacts = [];
+        document.getElementById("contactForm").onsubmit = function (e) {
+            e.preventDefault();
+            var id = document.getElementById("contactId").value;
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            if (id) {
+                for (var i = 0; i < contacts.length; i++) {
+                    if (contacts[i].id == id) {
+                        contacts[i].name = name;
+                        contacts[i].email = email;
+                        break;
+                    }
+                }
+            } else {
+                contacts.push({ id: new Date().getTime(), name: name, email: email });
+            }
+
+            document.getElementById("contactForm").reset();
+            displayContacts();
+        };
+        document.getElementById("search").oninput = function () {
+            var query = this.value.toLowerCase();
+            var filtered = contacts.filter(function (contact) {
+                return contact.name.toLowerCase().indexOf(query) > -1;
+            });
+            displayContacts(filtered);
+        };
+
+        function displayContacts(list) {
+            list = list || contacts;
+            var contactList = document.getElementById("contactList");
+            contactList.innerHTML = "";
+
+            for (var i = 0; i < list.length; i++) {
+                var contact = list[i];
+                var div = document.createElement("div");
+                var content =
+                    "Name: " + contact.name + "<br>Email: " + contact.email + "<br>" +
+                    "<button onclick=\"editContact(" + contact.id + ")\">Edit</button> " +
+                    "<button onclick=\"deleteContact(" + contact.id + ")\">Delete</button><hr>";
+                div.innerHTML = content;
+                contactList.appendChild(div);
+            }
+        }
+        function editContact(id) {
+            for (var i = 0; i < contacts.length; i++) {
+                if (contacts[i].id == id) {
+                    document.getElementById("contactId").value = contacts[i].id;
+                    document.getElementById("name").value = contacts[i].name;
+                    document.getElementById("email").value = contacts[i].email;
+                    break;
+                }
+            }
+        }
+        function deleteContact(id) {
+            contacts = contacts.filter(function (contact) {
+                return contact.id != id;
+            });
+            displayContacts();
+        }
+    </script>

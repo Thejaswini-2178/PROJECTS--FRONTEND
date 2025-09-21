@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player with Circular Progress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+        .player-container {
+            width: 250px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .controls button {
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        .progress-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+        }
+        .circle {
+            stroke-width: 10;
+            fill: none;
+            transition: stroke-dashoffset 0.2s; /* Faster transition for quicker updates */
+        }
+        .circle-background {
+            stroke: #e6e6e6;
+        }
+        .circle-progress {
+            stroke: #007BFF;
+        }
+        svg {
+            transform: rotate(-90deg); /* Rotate to start progress from the top */
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
+            pointer-events: none; /* Ensures text does not interfere with interactions */
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <audio id="audioPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        <div class="controls">
+            <button id="playStopButton" onclick="togglePlayStop()">Play</button>
+        </div>
+        <div class="progress-container">
+            <svg width="120" height="120">
+                <circle class="circle circle-background" cx="60" cy="60" r="50"></circle>
+                <circle class="circle circle-progress" cx="60" cy="60" r="50"></circle>
+                <text x="50%" y="50%" text-anchor="middle" class="progress-text" id="progressText">0%</text>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playStopButton = document.getElementById('playStopButton');
+        const progressCircle = document.querySelector('.circle-progress');
+        const progressText = document.getElementById('progressText');
+        
+        const radius = 50; // Radius of the circle
+        const circumference = 2 * Math.PI * radius;
+
+        // Initialize the circle progress
+        progressCircle.style.strokeDasharray = circumference;
+        progressCircle.style.strokeDashoffset = circumference;
+
+        // Update progress as audio plays
+        audioPlayer.addEventListener('timeupdate', () => {
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            const offset = circumference - (progress / 100) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+            progressText.textContent = `${Math.round(progress)}%`;
+        });
+
+        function togglePlayStop() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playStopButton.textContent = 'Stop';
+            } else {
+                audioPlayer.pause();
+                playStopButton.textContent = 'Play';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Quiz App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #4CAF50;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      margin-bottom: 10px;
+    }
+    .options input {
+      margin-right: 10px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .result {
+      text-align: center;
+      font-size: 18px;
+      color: #4CAF50;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Online Quiz</h1>
+    <div id="quiz"></div>
+    <button class="btn" id="submit">Submit</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    // Base Question Class
+    function Question(text, options, correctAnswer) {
+      this.text = text;
+      this.options = options;
+      this.correctAnswer = correctAnswer;
+    }
+
+    // Prototype method to validate answer
+    Question.prototype.validateAnswer = function (userAnswer) {
+      return userAnswer === this.correctAnswer;
+    };
+
+    // MultipleChoiceQuestion subclass
+    function MultipleChoiceQuestion(text, options, correctAnswer) {
+      Question.call(this, text, options, correctAnswer);
+    }
+    MultipleChoiceQuestion.prototype = Object.create(Question.prototype);
+    MultipleChoiceQuestion.prototype.constructor = MultipleChoiceQuestion;
+
+    // TrueFalseQuestion subclass
+    function TrueFalseQuestion(text, correctAnswer) {
+      Question.call(this, text, ["True", "False"], correctAnswer);
+    }
+    TrueFalseQuestion.prototype = Object.create(Question.prototype);
+    TrueFalseQuestion.prototype.constructor = TrueFalseQuestion;
+
+    // Quiz Questions
+    const questions = [
+      new MultipleChoiceQuestion("What is the capital of France?", ["Paris", "London", "Berlin", "Madrid"], "Paris"),
+      new MultipleChoiceQuestion("Which is the largest planet?", ["Earth", "Mars", "Jupiter", "Saturn"], "Jupiter"),
+      new TrueFalseQuestion("The Earth is flat.", "False"),
+      new TrueFalseQuestion("JavaScript is a programming language.", "True"),
+      new TrueFalseQuestion("Sun Rises in the East", "True"),
+    ];
+
+    // Render Quiz
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach(function(question, index) {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      const questionHTML = "<p>" + (index + 1) + ". " + question.text + "</p>";
+
+      const optionsList = document.createElement("ul");
+      optionsList.className = "options";
+
+      question.options.forEach(function(option) {
+        const optionItem = document.createElement("li");
+        optionItem.innerHTML = '<label><input type="radio" name="question' + index + '" value="' + option + '" /> ' + option + '</label>';
+        optionsList.appendChild(optionItem);
+      });
+
+      questionDiv.innerHTML += questionHTML;
+      questionDiv.appendChild(optionsList);
+      quizContainer.appendChild(questionDiv);
+    });
+
+    // Calculate Score
+    document.getElementById("submit").addEventListener("click", function() {
+      let score = 0;
+      questions.forEach(function(question, index) {
+        const selectedOption = document.querySelector('input[name="question' + index + '"]:checked');
+        if (selectedOption && question.validateAnswer(selectedOption.value)) {
+          score++;
+        }
+      });
+
+      const resultContainer = document.getElementById("result");
+      resultContainer.textContent = "You scored " + score + " out of " + questions.length + ".";
+    });
+  </script>
+</body>
+</html>
