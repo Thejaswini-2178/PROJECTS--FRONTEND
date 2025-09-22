@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <script src="app.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-6">Task Management System</h1>
+
+        <!-- Add Task Section -->
+        <div class="bg-white p-6 rounded shadow mb-6">
+            <form id="addTaskForm" class="space-y-4">
+                <input type="text" id="taskName" class="w-full px-3 py-2 border rounded-md"
+                    placeholder="Enter task name" required />
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                    Add Task
+                </button>
+            </form>
+        </div>
+
+        <!-- Task Categories -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Pending Tasks -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4">Pending</h2>
+                <ul id="pendingTasks" class="space-y-4 bg-white p-4 rounded shadow">
+                    <!-- Dynamic Pending Tasks -->
+                </ul>
+            </div>
+
+            <!-- In Progress Tasks -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4">In Progress</h2>
+                <ul id="inProgressTasks" class="space-y-4 bg-white p-4 rounded shadow">
+                    <!-- Dynamic In Progress Tasks -->
+                </ul>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4">Completed</h2>
+                <ul id="completedTasks" class="space-y-4 bg-white p-4 rounded shadow">
+                    <!-- Dynamic Completed Tasks -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const taskManager = {
+            tasks: {
+                pending: [],
+                inProgress: [],
+                completed: [],
+            },
+
+            // Add a new task
+            addTask(taskName) {
+                const newTask = {
+                    id: Date.now(),
+                    name: taskName,
+                    completed: false,
+                    date: new Date(),
+                };
+                this.tasks.pending.push(newTask);
+                this.renderTasks();
+            },
+
+            // Move task between categories
+            moveTask(taskId, fromCategory, toCategory) {
+                const taskIndex = this.tasks[fromCategory].findIndex(
+                    (task) => task.id === taskId
+                );
+                if (taskIndex !== -1) {
+                    const [task] = this.tasks[fromCategory].splice(taskIndex, 1);
+                    if (toCategory === "completed") task.completed = true;
+                    this.tasks[toCategory].push(task);
+                    this.renderTasks();
+                }
+            },
+
+            // Remove a task
+            removeTask(taskId, category) {
+                this.tasks[category] = this.tasks[category].filter(
+                    (task) => task.id !== taskId
+                );
+                this.renderTasks();
+            },
+
+            // Render tasks in their respective categories
+            renderTasks() {
+                // Helper function to render tasks
+                const
+                    renderCategory = (category, containerId) => {
+                        const container = document.getElementById(containerId);
+                        container.innerHTML = ""; // Clear existing tasks
+
+                        this.tasks[category].forEach((task) => {
+                            const taskItem = document.createElement("li");
+                            taskItem.className =
+                                "flex justify-between items-center bg-gray-100 p-3 rounded";
+
+                            taskItem.innerHTML = `
+            <span>${task.name}</span>
+            <div>
+              ${category !== "completed"
+                                    ? `<button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600" onclick="taskManager.moveTask(${task.id}, '${category}', '${category === "pending" ? "inProgress" : "completed"}')">Move</button>`
+                                    : ""
+                                }
+              <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600" onclick="taskManager.removeTask(${task.id}, '${category}')">Remove</button>
+            </div>
+          `;
+
+                            container.appendChild(taskItem);
+                        });
+                    };
+
+                renderCategory("pending", "pendingTasks");
+                renderCategory("inProgress", "inProgressTasks");
+                renderCategory("completed", "completedTasks");
+            },
+        };
+
+        // Add event listener for adding tasks
+        document.getElementById("addTaskForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const taskName = document.getElementById("taskName").value;
+            taskManager.addTask(taskName);
+            e.target.reset();
+        });
+    </script>
+</body>
+
+</html>
