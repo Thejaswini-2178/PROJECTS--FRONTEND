@@ -12,7 +12,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // You'll need to replace this with your actual EmailJS public key
+            // Initialize EmailJS with your public key
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
         })();
     </script>
     
@@ -1318,16 +1319,7 @@
                             <a href="mailto:thejaswini.yss@gmail.com">thejaswini.yss@gmail.com</a>
                         </div>
                     </div>
-                    <div class="contact-info-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Location</h3>
-                            <span>Chittoor, Andhra Pradesh, India</span>
-                        </div>
-                    </div>
-                    <div class="contact-info-item">
+                     <div class="contact-info-item">
                         <div class="contact-icon">
                             <i class="fab fa-linkedin"></i>
                         </div>
@@ -1344,6 +1336,24 @@
                             <h3>GitHub</h3>
                             <a href="https://github.com/Thejaswini-2178" target="_blank">github.com/Thejaswini-2178</a>
                         </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Location</h3>
+                            <span>Chittoor, Andhra Pradesh, India</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Phone</h3>
+                            <span>+91 6281312856</span>
+                    </div>
                     </div>
                     <div class="social-links">
                         <a href="mailto:thejaswini.yss@gmail.com" class="social-link">
@@ -1514,14 +1524,15 @@
             // Get form data
             const formData = new FormData(contactForm);
             const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
+                from_name: formData.get('name'),
+                from_email: formData.get('email'),
                 subject: formData.get('subject'),
-                message: formData.get('message')
+                message: formData.get('message'),
+                to_email: "thejaswini.yss@gmail.com"
             };
             
             // Send email using EmailJS
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', data)
+            emailjs.send('service_xyz', 'template_abc', data)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     
