@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Righteous&size=35&center=true&vCenter=true&width=600&height=70&duration=4000&pause=1000&color=58A6FF&lines=Hi+There!+👋;I'm+Thejaswini!;Software+Developer;Front-End+Developer;React.js+Enthusiast" />
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&lines=Hi+There!+👋;+I'm+Thejaswini+!;" />
 </h1>
 
 <h3 align="center">Software Developer | Front-End Developer | React.js Enthusiast</h3>
@@ -116,3 +116,33 @@
 🔗 <b>GitHub:</b> https://github.com/Thejaswini-2178
 
 </div>
+
+<div align="center"> 
+  <a href="mailto:thejaswini.yss@gmail.com?subject=Hello&body=Hi%20there!">
+    <img src="https://img.shields.io/badge/Gmail-333333?style=for-the-badge&logo=gmail&logoColor=red" />
+  </a>
+
+  <a href="https://www.linkedin.com/in/yellumgudla-thejaswini-a92627251/" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank" />
+  </a>
+  <a href="https://github.com/Thejaswini-2178" target="_blank">
+     <img src="https://img.shields.io/badge/GitHub-333333?style=for-the-badge&logo=github&logoColor=white" width="100px"; height="30px" target="_blank" /> <!-- sqlite, safari, google-chrome are other good icon options -->
+  </a>
+</div>
+
+ <hr/>
+<h2 align="center">⚒️ Languages-Frameworks-Tools ⚒️</h2>
+<br/>
+<div align="center">
+    <img src="https://skillicons.dev/icons?i=html,css,javascript,react,vscode,github"/>
+</div>
+
+<br/>
+<hr/>
+
+<div align="center">
+ <img src="https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&lines=👋+Shoot+Me+a+Message+📩;" />
+</div>
+
+<br/>
+
