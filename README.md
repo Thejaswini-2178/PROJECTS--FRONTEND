@@ -92,23 +92,23 @@
 
 🚀 <b>Featured Projects</b><br><br>
 
-🛒 <b>Full-Stack E-Commerce Platform</b> – Developed a modern e-commerce web application featuring user authentication, product browsing, category filtering, shopping cart functionality, responsive UI, and REST API integration.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🛒 <b>Full-Stack E-Commerce Platform</b> – Developed a modern e-commerce web application featuring user authentication, product &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;browsing, category filtering, shopping cart functionality, responsive UI, and REST API integration.<br>
 
-💬 <b>Real-Time Chat Application</b> – Built a responsive real-time messaging application with secure authentication, one-to-one messaging, online user status, and an intuitive user interface.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;💬 <b>Real-Time Chat Application</b> – Built a responsive real-time messaging application with secure authentication, one-to-one &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messaging,online user status, and an intuitive user interface.<br>
 
-👨‍💼 <b>Employee Management System</b> – Developed a CRUD-based employee management application with employee record management, search, filtering, dashboard, and responsive design.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👨‍💼 <b>Employee Management System</b> – Developed a CRUD-based employee management application with employee record &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;management,search,filtering,dashboard,and responsive design.<br>
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📋 <b>Task Management Dashboard</b> – Built a task management application that enables users to organize tasks efficiently with &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priorities,deadlines, status tracking, filtering, and a responsive dashboard.<br>
 
-📋 <b>Task Management Dashboard</b> – Built a task management application that enables users to organize tasks efficiently with priorities, deadlines, status tracking, filtering, and a responsive dashboard.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌦️ <b>Weather Application</b> – Developed a responsive weather application that fetches real-time weather information using REST with a &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clean and user-friendly interface.<br> 
 
-🌦️ <b>Weather Application</b> – Developed a responsive weather application that fetches real-time weather information using REST APIs with a clean and user-friendly interface.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📝 <b>Notes Application</b> – Created a lightweight notes application that allows users to create, edit, delete, and organize notes APIs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;through a responsive interface.<br>
 
-📝 <b>Notes Application</b> – Created a lightweight notes application that allows users to create, edit, delete, and organize notes through a responsive interface.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅ <b>To-Do Application</b> – Built a responsive task management application supporting CRUD operations with local storage for &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;efficienttask organization.<br> 
 
-✅ <b>To-Do Application</b> – Built a responsive task management application supporting CRUD operations with local storage for efficient task organization.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🧠 <b>Quiz Application</b> – Developed an interactive quiz application with score tracking, dynamic questions, and responsive design.<br>
 
-🧠 <b>Quiz Application</b> – Developed an interactive quiz application with score tracking, dynamic questions, and responsive design.<br>
-
-🎨 <b>React UI Templates</b> – Designed a collection of reusable React UI components and responsive layouts to accelerate front-end development.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🎨 <b>React UI Templates</b> – Designed a collection of reusable React UI components and responsive layouts to accelerate front-end &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;development.
 <br/>
 
 👇 <b>Check out more of my work in the pinned repositories below.</b>
