@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+</head>
+
+<body>
+
+  <h1>User Management</h1>
+
+  <div id="users"></div>
+
+  <h3>Add User</h3>
+  <input id="name" placeholder="Name" />
+  <input id="email" placeholder="Email" />
+  <select id="role">
+    <option>Admin</option>
+    <option>Subscriber</option>
+  </select>
+  <button onclick="addUser()">Add</button>
+
+  <button onclick="checkEmails()">Check Emails</button>
+  <button onclick="countAdmins()">Count Admins</button>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
