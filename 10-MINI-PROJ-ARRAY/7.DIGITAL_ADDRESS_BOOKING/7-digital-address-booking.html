@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Address Book</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Digital Address Book</h1>
+    <div>
+      <input id="name" type="text" placeholder="Name">
+      <input id="email" type="email" placeholder="Email">
+      <input id="phone" type="text" placeholder="Phone">
+      <button onclick="addContact()">Add Contact</button>
+    </div>
+    <div>
+      <input id="search" type="text" placeholder="Search by name or email" oninput="searchContacts()">
+    </div>
+    <ul id="contact-list"></ul>
+  </div>
+  <script src="./script.js"></script>
+</body>
+
+</html>
