@@ -1,0 +1,45 @@
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2, h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .categories {
+      margin-top: 20px;
+    }
+    .category {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #e9f5ff;
+      border: 1px solid #b3d8ff;
+      border-radius: 5px;
+    }
+    .category h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
