@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <script defer src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Task Management System</h1>
+
+        <!-- Add Task Section -->
+        <div class="mb-6">
+            <input id="task-name" type="text" placeholder="Enter task name"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <button id="add-task-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+                Add Task
+            </button>
+        </div>
+
+        <!-- Task Categories -->
+        <div class="grid grid-cols-3 gap-4">
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Pending</h2>
+                <div id="pending-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2">In Progress</h2>
+                <div id="in-progress-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Completed</h2>
+                <div id="completed-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
