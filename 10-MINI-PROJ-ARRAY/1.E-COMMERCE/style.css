@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.cart {
+    margin-top: 20px;
+}
+
+.cart-item {
+    margin-bottom: 5px;
+}
+
+.total {
+    font-weight: bold;
+}
+
+.search {
+    margin-top: 20px;
+}

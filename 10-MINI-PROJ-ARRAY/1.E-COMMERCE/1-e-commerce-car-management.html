@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <h1>Shopping Cart</h1>
+  <div class="products">
+    <div class="product" data-id="1" data-name="Product A" data-price="100">
+      <span>Product A - $100</span>
+      <button onclick="addToCart(1)">Add to Cart</button>
+    </div>
+    <div class="product" data-id="2" data-name="Product B" data-price="200">
+      <span>Product B - $200</span>
+      <button onclick="addToCart(2)">Add to Cart</button>
+    </div>
+    <div class="product" data-id="3" data-name="Product C" data-price="300">
+      <span>Product C - $300</span>
+      <button onclick="addToCart(3)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <p class="total">Total: $<span id="totalPrice">0</span></p>
+  </div>
+
+  <div class="search">
+    <h3>Search for a Product in Cart</h3>
+    <input type="number" id="searchInput" placeholder="Enter Product ID">
+    <button onclick="searchItemInCart()">Search</button>
+  </div>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
