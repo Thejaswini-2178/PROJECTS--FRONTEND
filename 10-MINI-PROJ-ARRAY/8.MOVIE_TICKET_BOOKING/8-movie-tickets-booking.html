@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking System</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Movie Ticket Booking System</h1>
+        <div id="seating"></div>
+        <div class="controls">
+            <button onclick="addSeat('regular')">Add Regular Seat</button>
+            <button onclick="addSeat('VIP')">Add VIP Seat</button>
+        </div>
+        <div class="actions">
+            <input id="seat-id" placeholder="Enter Seat ID">
+            <button onclick="bookSeat()">Book Seat</button>
+            <button onclick="cancelSeat()">Cancel Booking</button>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>
