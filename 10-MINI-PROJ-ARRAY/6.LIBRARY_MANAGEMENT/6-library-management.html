@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+</head>
+
+<body>
+
+  <h1>Library Management System</h1>
+
+  <h3>Add a Book</h3>
+  <input id="title" placeholder="Book Title" />
+  <input id="author" placeholder="Book Author" />
+  <button onclick="addBook()">Add Book</button>
+
+  <h3>Borrow a Book</h3>
+  <input id="borrowTitle" placeholder="Book Title to Borrow" />
+  <button onclick="borrowBook()">Borrow Book</button>
+
+  <h3>Return a Book</h3>
+  <input id="returnTitle" placeholder="Book Title to Return" />
+  <button onclick="returnBook()">Return Book</button>
+
+  <h3>Available Books</h3>
+  <button onclick="listAvailableBooks()">Show Available Books</button>
+
+  <h3>All Books</h3>
+  <button onclick="listAllBooks()">Show All Books</button>
+
+  <div id="books"></div>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>
