@@ -31,7 +31,7 @@ const renderTasks = () => {
           </div>`
         )
         .join("");
-
+        
     document.getElementById("in-progress-tasks").innerHTML = categories.inProgress
         .map(
             (task, index) =>
