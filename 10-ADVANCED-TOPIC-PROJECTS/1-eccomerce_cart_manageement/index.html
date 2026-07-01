@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Cart</title>
-    <script defer src="app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="">
-</head>
-
-<body class="bg-gray-100 font-sans">
-    <div class="container mx-auto p-4">
-        <div class=" mx-auto bg-white shadow-lg rounded-lg p-6">
-            <h1 class="text-2xl font-bold mb-6 text-center">E-Commerce Cart</h1>
-
-            <div class="grid grid-cols-2 gap-6">
-                <!-- Product List Section -->
-                <div>
-                    <h2 class="text-xl font-semibold mb-4">Products</h2>
-                    <!-- Search Input -->
-                    <div class="mb-4">
-                        <input id="search" type="text" placeholder="Search Products"
-                            class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <!-- Product List -->
-                    <div id="product-list" class="space-y-4"></div>
-                </div>
-
-                <!-- Cart Section -->
-                <div>
-                    <h2 class="text-xl font-semibold mb-4">Shopping Cart</h2>
-                    <div id="cart-items" class="space-y-4"></div>
-                    <div class="text-right font-bold mt-4">
-                        Total: <span id="total-price">$0</span>
-                    </div>
-                </div>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartCart Store</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Live Project</p>
+          <h1>SmartCart Store</h1>
+          <p class="subtitle">Manage your cart like a real e-commerce app.</p>
         </div>
+        <button class="cart-badge" type="button">
+          Cart <span id="cart-count">0</span>
+        </button>
+      </header>
+
+      <main class="layout">
+        <section class="products-section">
+          <div class="section-heading">
+            <h2>Featured Products</h2>
+            <p>Popular picks for a modern lifestyle.</p>
+          </div>
+          <label class="search-box" for="product-search">
+            <span>🔍</span>
+            <input id="product-search" type="text" placeholder="Search products..." list="product-suggestions" autocomplete="off" />
+            <datalist id="product-suggestions"></datalist>
+          </label>
+          <div id="products" class="products-grid"></div>
+        </section>
+
+        <aside class="cart-panel">
+          <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button id="clear-cart" class="link-btn" type="button">Clear</button>
+          </div>
+
+          <div id="cart-items" class="cart-items"></div>
+
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong id="subtotal">$0.00</strong>
+            </div>
+            <div class="summary-row">
+              <span>Delivery</span>
+              <strong>Free</strong>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <strong id="total">$0.00</strong>
+            </div>
+            <button id="checkout" class="checkout-btn" type="button">Checkout</button>
+          </div>
+        </aside>
+      </main>
     </div>
+
     <script src="./script.js"></script>
-
-</body>
-
+  </body>
 </html>
