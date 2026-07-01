@@ -1,0 +1,67 @@
+const taskCategories = {
+    pending: [],
+    onProgress: [],
+    completed: []
+}
+function addTask() {
+    const userInput = document.getElementById("input").value.trim()
+    if (userInput) {
+        taskCategories.pending.push(userInput);
+        document.getElementById("input").value = ""
+        updateTaskDisplay();
+    }
+    else {
+        alert("please enter the task!!")
+    }
+}
+function updateTaskDisplay() {
+    const tasksDiv = document.getElementById("tasks");
+    tasksDiv.innerHTML = ""
+    for (const category in taskCategories) {
+        const categoryDiv = document.createElement("div")
+        const heading = document.createElement("h3")
+        heading.textContent = category
+        categoryDiv.appendChild(heading)
+
+        const taskList = document.createElement("ul")
+        taskCategories[category].forEach((task, index) => {
+            const listItem = document.createElement("li")
+            listItem.textContent = task
+            // taskList.appendChild(listItem)
+
+            if (category === "pending") {
+                const startBTN = document.createElement("button")
+                startBTN.textContent = "Start"
+                startBTN.addEventListener("click", () => moveTask("pending", "onProgress", index))
+                listItem.appendChild(startBTN)
+            } else if (category === "onProgress") {
+                const completeBTN = document.createElement("button")
+                completeBTN.textContent = "Completed"
+
+                completeBTN.addEventListener("click", () => moveTask("onProgress", "completed", index))
+                listItem.appendChild(completeBTN)
+            } else if (category === "completed") {
+                listItem.style.textDecoration = "line-through"
+            }
+            taskList.appendChild(listItem)
+        })
+        categoryDiv.appendChild(taskList)
+        tasksDiv.appendChild(categoryDiv)
+    }
+    // console.log("task")
+    function moveTask(categoryFrom, categoryTo, index) {
+        const task = taskCategories[categoryFrom][index]
+        console.log(categoryFrom)//keys
+        console.log(taskCategories)//obj
+        console.log(index)//
+        if (categoryTo === "completed") {
+            const frozenTask = Object.freeze(task)
+            taskCategories.completed.push(frozenTask)
+        } else {
+            taskCategories[categoryTo].push(task)
+        }
+        taskCategories[categoryFrom].splice(index, 1)
+        updateTaskDisplay()
+    }
+}
+
