@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Post Manager</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <h1>Social Media Post Manager</h1>
+
+  <div id="postFeed"></div>
+
+  <h3>Add a New Post</h3>
+  <input type="text" id="newPostContent" placeholder="Enter post content">
+  <button onclick="addPost()">Add Post</button>
+
+  <h3>Search, Sort, and Validate Posts</h3>
+  <input type="text" id="searchKeyword" placeholder="Enter keyword">
+  <button onclick="searchPosts(document.getElementById('searchKeyword').value)">Search</button>
+  <button onclick="checkComments()">Check Comments</button>
+  <button onclick="validatePosts()">Validate Posts</button>
+  <button onclick="sortPostsByLikes()">Sort by Likes</button>
+  <script src="./script.js"></script>
+</body>
+
+</html>
